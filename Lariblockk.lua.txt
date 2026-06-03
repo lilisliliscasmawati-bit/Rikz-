@@ -1,0 +1,156 @@
+-- RIKZ HUB | AUTO X2 + KEBAL --
+-- NAPOLEON STYLE MENU --
+
+local Players = game:GetService("Players")
+local UIS = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+local Workspace = game:GetService("Workspace")
+local Player = Players.LocalPlayer
+
+-- // BIKIN TAMPILAN MENU //
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "RIKZHUB"
+ScreenGui.Parent = CoreGui
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.ResetOnSpawn = false
+
+-- Kotak Utama
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+MainFrame.Position = UDim2.new(0.05, 0, 0.05, 0)
+MainFrame.Size = UDim2.new(0, 280, 0, 250)
+MainFrame.Active = true
+MainFrame.Draggable = true
+MainFrame.BorderSizePixel = 0
+
+-- Garis Samping (Biru Khas Napoleon)
+local SideBar = Instance.new("Frame")
+SideBar.Parent = MainFrame
+SideBar.BackgroundColor3 = Color3.fromRGB(80, 120, 255)
+SideBar.Position = UDim2.new(0, 0, 0, 0)
+SideBar.Size = UDim2.new(0, 4, 1, 0)
+
+-- Judul
+local Title = Instance.new("TextLabel")
+Title.Parent = MainFrame
+Title.BackgroundTransparency = 1
+Title.Position = UDim2.new(0.08, 0, 0.05, 0)
+Title.Size = UDim2.new(0.8, 0, 0, 30)
+Title.Font = Enum.Font.GothamBold
+Title.Text = "⚡ RIKZ HUB ⚡"
+Title.TextColor3 = Color3.new(1,1,1)
+Title.TextSize = 13
+Title.TextXAlignment = Enum.TextXAlignment.Left
+
+-- // FUNGSI BIKIN TOMBOL //
+local function BuatTombol(Nama, PosY)
+    local Btn = Instance.new("Frame")
+    Btn.Parent = MainFrame
+    Btn.BackgroundColor3 = Color3.fromRGB(25,25,25)
+    Btn.Position = UDim2.new(0.1, 0, PosY, 0)
+    Btn.Size = UDim2.new(0.8, 0, 0, 50)
+
+    local GarisAktif = Instance.new("Frame")
+    GarisAktif.Parent = Btn
+    GarisAktif.BackgroundColor3 = Color3.fromRGB(80, 120, 255)
+    GarisAktif.Position = UDim2.new(0, 0, 0.2, 0)
+    GarisAktif.Size = UDim2.new(0, 4, 0.6, 0)
+    GarisAktif.Visible = false
+
+    local Txt = Instance.new("TextLabel")
+    Txt.Parent = Btn
+    Txt.BackgroundTransparency = 1
+    Txt.Position = UDim2.new(0.1, 0, 0, 0)
+    Txt.Size = UDim2.new(0.8, 0, 1, 0)
+    Txt.Font = Enum.Font.GothamSemibold
+    Txt.Text = Nama
+    Txt.TextColor3 = Color3.fromRGB(180,180,180)
+    Txt.TextSize = 14
+
+    -- Status Aktif/Mati
+    local Aktif = false
+    Btn.InputBegan:Connect(function(Input)
+        if Input:Is("MouseButton1") then
+            Aktif = not Aktif
+            GarisAktif.Visible = Aktif
+            Txt.TextColor3 = Aktif and Color3.new(1,1,1) or Color3.fromRGB(180,180,180)
+            Btn.BackgroundColor3 = Aktif and Color3.fromRGB(30,30,30) or Color3.fromRGB(25,25,25)
+        end
+    end)
+
+    return {Btn=Btn, Aktif=function() return Aktif end}
+end
+
+-- // BIKIN TOMBOL FITUR //
+local TombolAutoX2 = BuatTombol("🤖 AUTO KLIK x2", 0.2)
+local TombolKebal = BuatTombol("🛡️ KEBAL / GOD MODE", 0.48)
+
+-- // FITUR 1: AUTO KLIK x2 //
+spawn(function()
+    while wait(0.05) do
+        if TombolAutoX2.Aktif() then
+            pcall(function()
+                local Karakter = Player.Character
+                if not Karakter then return end
+
+                -- Klik Tombol Tangan / x2 di Layar
+                for _, Gui in pairs(Player.PlayerGui:GetDescendants()) do
+                    if Gui:IsA("ImageButton") or Gui:IsA("TextButton") then
+                        if Gui.Visible and (Gui.Name:lower():find("multi") or Gui.Name:lower():find("x2") or Gui.Name:lower():find("bonus")) then
+                            fireclickdetector(Gui)
+                        end
+                    end
+                end
+
+                -- Klik Tombol di Dunia
+                for _, Benda in pairs(Workspace:GetDescendants()) do
+                    if Benda:IsA("Part") and Benda:FindFirstChild("ClickDetector") then
+                        if Benda.Name:lower():find("x2") or Benda.Name:lower():find("multiplier") or Benda.Name:lower():find("pop") then
+                            fireclickdetector(Benda.ClickDetector)
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+-- // FITUR 2: KEBAL / GOD MODE //
+spawn(function()
+    while wait() do
+        if TombolKebal.Aktif() then
+            pcall(function()
+                local Karakter = Player.Character or Player.CharacterAdded:Wait()
+                local Humanoid = Karakter:WaitForChild("Humanoid")
+                Humanoid.MaxHealth = math.huge
+                Humanoid.Health = math.huge
+                Humanoid.HealthChanged:Connect(function()
+                    if Humanoid.Health < Humanoid.MaxHealth then
+                        Humanoid.Health = Humanoid.MaxHealth
+                    end
+                end)
+            end)
+        end
+    end
+end)
+
+-- // TOMBOL TUTUP //
+local CloseBtn = Instance.new("TextButton", MainFrame, {
+    Text = "X", Font = Enum.Font.GothamBold, TextColor3 = Color3.new(1,0.3,0.3),
+    BackgroundTransparency = 1, Position = UDim2.new(0.9,0,0.05,0), Size = UDim2.new(0,25,0,25),
+    MouseButton1Click = function() ScreenGui:Destroy() end
+})
+
+-- // NOTIFIKASI //
+local Notif = Instance.new("TextLabel", CoreGui, {
+    BackgroundColor3 = Color3.fromRGB(20,20,20), Size = UDim2.new(0,220,0,35), Position = UDim2.new(0.5,-110,0.1,0),
+    Font = Enum.Font.GothamBold, Text = "✅ RIKZ HUB BERHASIL DIMUAT!", TextColor3 = Color3.new(1,1,1), TextSize = 12,
+    BorderSizePixel = 0
+})
+Instance.new("Frame", Notif, {BackgroundColor3 = Color3.fromRGB(80,120,255), Size = UDim2.new(1,0,0,3), Position = UDim2.new(0,0,0,0)})
+TweenService:Create(Notif, TweenInfo.new(3), {BackgroundTransparency=1, TextTransparency=1}):Play()
+wait(3)
+Notif:Destroy()
