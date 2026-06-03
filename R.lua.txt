@@ -1,31 +1,33 @@
--- ✅ AUTO TRAIN | UDAH ADA DI SINI
-... kode kamu yang lama ...
-
-------------------------------------------------
-
--- ✅ AUTO PENCET TOMBOL X2 | BARU DITAMBAH
+-- ✅ KHUSUS AUTO PENCET TOMBOL X2
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 
 spawn(function()
     while true do
-        wait(0.15)
+        wait(0.1) -- ⚡ CEPAT BANGET, BIAR GAK KETINGGALAN
         pcall(function()
+            -- 🔍 CARI DI LAYAR (PlayerGui)
             for _, v in pairs(Player.PlayerGui:GetDescendants()) do
+                
+                -- ✅ SYARAT: Harus TOMBOL & KELIHATAN
                 if (v:IsA("ImageButton") or v:IsA("TextButton")) and v.Visible then
+                    
+                    -- ✅ CARI NAMA YANG ADA TULISAN "X2" / "x2" / "2x"
                     if string.find(string.lower(v.Name), "x2") 
-                    or string.find(string.lower(v.Name), "2x") 
-                    or string.find(string.lower(v.Name), "double") 
-                    or string.find(string.lower(v.Name), "multiplier") then
+                    or string.find(string.lower(v.Name), "2x") then
+
+                        -- 🖱️ PERINTAH UTAMA: TEKAN OTOMATIS
                         fireclickdetector(v)
-                        v.MouseButton1Down:Fire()
-                        wait(0.03)
-                        v.MouseButton1Up:Fire()
+                        
+                        -- 🔄 KALAU HARUS DITEKAN TERUS:
+                        v.MouseButton1Down:Fire() -- TEKAN BAWA
+                        wait(0.02)
+                        v.MouseButton1Up:Fire() -- LEPAS
+
+                        print("✅ BERHASIL MENCET X2!") -- TANDA BERHASIL DI KONSOLE
                     end
                 end
             end
         end)
     end
 end)
-
-print("✅ SEMUA FITUR JALAN!")
