@@ -1,39 +1,24 @@
--- ==================================================
--- 📌 SCRIPT RIKZ HUB | DIPERBAIKI TOTAL
--- ==================================================
-
--- 🔹 AMBIL ALAT ROBLOX
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UIS = game:GetService("UserInputService")
 
--- 🔹 DATA DIRI
 local Player = Players.LocalPlayer
 local Character, Humanoid, RootPart
 local remotes = nil
 
--- 🔹 TUNGGU SAMPAI REMOTES ADA (INI YANG KURANG DULU)
-coroutine.wrap(function()
+spawn(function()
     remotes = ReplicatedStorage:WaitForChild("Remotes", 10)
-end)()
+end)
 
--- ==================================================
--- ✅ LANGKAH 1: BIKIN MENU DULU ✅
--- ==================================================
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ToraIsMe/ToraIsMe/main/UiLib"))()
 
--- Jendela Utama
 local Window = Library:CreateWindow("⚡ RIKZ HUB ⚡", 520, 400)
 
--- Halaman / Tab (WAJIB DIBIKIN DI ATAS)
 local TabUtama = Window:CreateTab("🏠 BERANDA")
 local Tab = Window:CreateTab("🛠️ FITUR")
 local TabInfo = Window:CreateTab("ℹ️ TENTANG")
 
--- ==================================================
--- ✅ LANGKAH 2: FUNGSI PENTING ✅
--- ==================================================
 local function UpdateChar()
     Character = Player.Character or Player.CharacterAdded:Wait()
     Humanoid = Character:WaitForChild("Humanoid", 5)
@@ -42,88 +27,90 @@ end
 UpdateChar()
 Player.CharacterAdded:Connect(UpdateChar)
 
--- ==================================================
--- ✅ LANGKAH 3: FITUR-FITUR ✅
--- ==================================================
-
--- 🔹 AUTO KLIK x2
 getgenv().AutoKlik = false
-Tab:CreateToggle("🤖 AUTO KLIK x2", function(state)
-    AutoKlik = state
-    if state then
-        spawn(function()
-            while AutoKlik do
-                wait(0.01)
-                pcall(function()
-                    if not Character or not RootPart then return end
-                    UIS:InputBegan:Fire({UserInputType = Enum.UserInputType.MouseButton1, Position = Vector2.new(640, 360)})
-                    UIS:InputEnded:Fire({UserInputType = Enum.UserInputType.MouseButton1, Position = Vector2.new(640, 360)})
-                    
-                    for _,v in pairs(Player.PlayerGui:GetDescendants()) do
-                        if v:IsA("ImageButton") and v.Visible and v.AbsoluteSize.X > 80 then
-                            fireclickdetector(v)
-                        end
-                    end
-                end)
-            end
-        end)
-    end
-end)
-
--- 🔹 KEBAL / GOD MODE
-getgenv().Kebal = false
-Tab:CreateToggle("🛡️ KEBAL MODE", function(state)
-    Kebal = state
-    if state then
-        spawn(function()
-            while Kebal do
-                wait()
-                pcall(function()
-                    if Humanoid then
-                        Humanoid.MaxHealth = math.huge
-                        Humanoid.Health = math.huge
-                        Humanoid.HealthChanged:Connect(function() 
-                            pcall(function() Humanoid.Health = math.huge end)
-                        end)
-                    end
-                end)
-            end
-        end)
-    end
-end)
-
--- 🔹 AUTO TRAIN (DITAMBAH PENGAMAN REMOTES)
-getgenv().AutoTrain = false
-Tab:CreateToggle("🚆 AUTO TRAIN", function(state)
-    AutoTrain = state
-    if state then
-        spawn(function()
-            while AutoTrain do
-                wait(0.2)
-                pcall(function()
-                    if not remotes or not RootPart then return end -- ⚠️ PENGAMAN UTAMA
-                    local tempat = Workspace:FindFirstChild("Training")
-                    if tempat then
-                        for _,v in pairs(tempat:GetDescendants()) do
-                            if v:IsA("Part") and v.Name == "TrainPart" then
-                                RootPart.CFrame = v.CFrame + Vector3.new(0,2,0)
-                                remotes.Train:FireServer()
+Tab:CreateToggle({
+    Name = "🤖 AUTO KLIK x2",
+    CurrentValue = false,
+    Callback = function(state)
+        AutoKlik = state
+        if state then
+            spawn(function()
+                while AutoKlik do
+                    wait(0.01)
+                    pcall(function()
+                        if not RootPart then return end
+                        UIS:InputBegan:Fire({UserInputType = Enum.UserInputType.MouseButton1, Position = Vector2.new(640, 360)})
+                        UIS:InputEnded:Fire({UserInputType = Enum.UserInputType.MouseButton1, Position = Vector2.new(640, 360)})
+                        
+                        for _,v in pairs(Player.PlayerGui:GetDescendants()) do
+                            if v:IsA("ImageButton") and v.Visible and v.AbsoluteSize.X > 80 then
+                                fireclickdetector(v)
                             end
                         end
-                    end
-                end)
-            end
-        end)
+                    end)
+                end
+            end)
+        end
     end
-end)
+})
 
--- ==================================================
--- ✅ TAMBAHAN TAMPILAN ✅
--- ==================================================
+getgenv().Kebal = false
+Tab:CreateToggle({
+    Name = "🛡️ KEBAL MODE",
+    CurrentValue = false,
+    Callback = function(state)
+        Kebal = state
+        if state then
+            spawn(function()
+                while Kebal do
+                    wait()
+                    pcall(function()
+                        if Humanoid then
+                            Humanoid.MaxHealth = math.huge
+                            Humanoid.Health = math.huge
+                            Humanoid.HealthChanged:Connect(function()
+                                pcall(function() Humanoid.Health = math.huge end)
+                            end)
+                        end
+                    end)
+                end
+            end)
+        end
+    end
+})
+
+getgenv().AutoTrain = false
+Tab:CreateToggle({
+    Name = "🚆 AUTO TRAIN",
+    CurrentValue = false,
+    Callback = function(state)
+        AutoTrain = state
+        if state then
+            spawn(function()
+                while AutoTrain do
+                    wait(0.2)
+                    pcall(function()
+                        if not remotes or not RootPart then return end
+                        local tempat = Workspace:FindFirstChild("Training")
+                        if tempat then
+                            for _,v in pairs(tempat:GetDescendants()) do
+                                if v:IsA("Part") and v.Name == "TrainPart" then
+                                    RootPart.CFrame = v.CFrame + Vector3.new(0, 2, 0)
+                                    remotes.Train:FireServer()
+                                end
+                            end
+                        end
+                    end)
+                end
+            end)
+        end
+    end
+})
+
 TabUtama:CreateLabel("👋 Halo! Script Lengkap Rikz")
-TabUtama:CreateLabel("✅ Semua fitur aman & anti error")
+TabUtama:CreateLabel("✅ Semua fitur aman & beres")
 
 TabInfo:CreateSection("Dibuat Oleh")
 TabInfo:CreateLabel("💻 RIKZ | Belajar Ngoding")
 
-Library:Notify("✅ SCRIPT BERHASIL DIMUAT!", "SIAP PAKAI!", 3)
+Library:Notify("✅ SCRIPT BERHASIL!", "SIAP PAKAI!", 3)
