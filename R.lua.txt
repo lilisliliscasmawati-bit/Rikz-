@@ -1,69 +1,145 @@
--- RIKZ HUB | MENU TORA STYLE + FITUR LENGKAP --
--- AUTO x2 KE MANAPUN PINDAH + KEBAL --
+-- Script Lari block keberuntungan| Gumanba
+-- https://raw.githubusercontent.com/gumanba/Scripts/main/KickaLuckyBlock
 
--- 🔹 MUAT TAMPILAN MENU TORA ASLI 🔹
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ToraIsMe/ToraIsMe/main/UiLib"))()
-local Window = Library:CreateWindow("⚡ RIKZ HUB ⚡", 520, 400)
+local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shahriar0172/Rayfield/main/source'))()
 
--- 🔹 BAGIAN MENU 🔹
-local MainTab = Window:CreateTab("🏠 UTAMA")
-local FarmTab = Window:CreateTab("🤖 OTOMATIS")
-local LainTab = Window:CreateTab("🛡️ LAINNYA")
+local Window = Rayfield:CreateWindow({
+   Name = "Rikz| Lari block keberuntungan",
+   Icon = 0,
+   LoadingTitle = "Gumanba Hub",
+   LoadingSubtitle = "by Gumanba",
+   Theme = "Default",
+   DisableRayfieldPrompts = true,
+   DisableBuildWarnings = true,
+   ConfigurationSaving = {
+      Enabled = false
+   },
+   Discord = {
+      Enabled = false
+   }
+})
 
--- 🔹 VARIABEL PENGATURAN 🔹
-getgenv().AutoX2 = false
-getgenv().Kebal = false
+local Tab = Window:CreateTab("Fitur", 4483362458)
+local Section = Tab:CreateSection("Utama")
 
--- ============== FITUR 1: AUTO KLIK x2 ==============
-FarmTab:CreateToggle("🤖 AUTO KLIK x2 (KE MANAPUN PINDAH)", function(state)
-    AutoX2 = state
-    if state then
-        spawn(function()
-            while AutoX2 do wait(0.01)
-                pcall(function()
-                    -- 🎯 CARA AMPUH: KLIK TENGAH LAYAR + CARI GAMBAR
-                    local UIS = game:GetService("UserInputService")
-                    -- Klik titik tengah pas tempat tombol ungu
-                    UIS:InputBegan:Fire({UserInputType = Enum.UserInputType.MouseButton1, Position = Vector2.new(640, 360)})
-                    UIS:InputEnded:Fire({UserInputType = Enum.UserInputType.MouseButton1, Position = Vector2.new(640, 360)})
+-- Variabel
+local plr = game:GetService("Players").LocalPlayer
+local char, hum, root
+local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local remotes = ReplicatedStorage:WaitForChild("Remotes")
 
-                    -- 🔍 CARI BERDASARKAN GAMBAR & UKURAN
-                    for _, gui in pairs(game.Players.LocalPlayer.PlayerGui:GetDescendants()) do
-                        if gui:IsA("ImageButton") and gui.Visible then
-                            if gui.AbsoluteSize.X > 80 and gui.AbsoluteSize.Y > 80 then
-                                if string.find(gui.Name:lower(), "x2") or string.find(gui.Image:lower(), "hand") or string.find(gui.Image:lower(), "multi") then
-                                    fireclickdetector(gui)
-                                end
-                            end
+-- Update Karakter
+local function UpdateChar()
+    char = plr.Character or plr.CharacterAdded:Wait()
+    hum = char:WaitForChild("Humanoid")
+    root = char:WaitForChild("HumanoidRootPart")
+end
+UpdateChar()
+plr.CharacterAdded:Connect(UpdateChar)
+
+-- Perfect Kick
+local PerfectKick = false
+Tab:CreateToggle({
+   Name = "Perfect Kick",
+   CurrentValue = false,
+   Callback = function(Value)
+      PerfectKick = Value
+   end
+})
+
+-- Auto Train
+local AutoTrain = false
+Tab:CreateToggle({
+   Name = "Auto Train",
+   CurrentValue = false,
+   Callback = function(Value)
+      AutoTrain = Value
+   end
+})
+
+-- Auto Rebirth
+local AutoRebirth = false
+Tab:CreateToggle({
+   Name = "Auto Rebirth",
+   CurrentValue = false,
+   Callback = function(Value)
+      AutoRebirth = Value
+   end
+})
+
+-- Auto Collect
+local AutoCollect = false
+Tab:CreateToggle({
+   Name = "Auto Collect Cash",
+   CurrentValue = false,
+   Callback = function(Value)
+      AutoCollect = Value
+   end
+})
+
+-- Upgrade All
+Tab:CreateButton({
+   Name = "Upgrade All",
+   Callback = function()
+      pcall(function()
+         remotes.Upgrade:InvokeServer("Power")
+         remotes.Upgrade:InvokeServer("Speed")
+         remotes.Upgrade:InvokeServer("Strength")
+      end)
+   end
+})
+
+-- LOOP UTAMA
+spawn(function()
+    while wait(0.1) do
+        pcall(function()
+            
+            -- Perfect Kick
+            if PerfectKick and char and root then
+                local block = Workspace:FindFirstChild("LuckyBlock")
+                if block and block:FindFirstChild("RootPart") then
+                    root.CFrame = CFrame.new(block.RootPart.Position + Vector3.new(0, 3, 5))
+                    remotes.Kick:FireServer(block.RootPart)
+                end
+            end
+
+            -- Auto Train
+            if AutoTrain then
+                local train = Workspace:FindFirstChild("Training")
+                if train then
+                    for _,v in pairs(train:GetDescendants()) do
+                        if v:IsA("Part") and v.Name == "TrainPart" then
+                            root.CFrame = v.CFrame + Vector3.new(0,2,0)
+                            remotes.Train:FireServer()
                         end
                     end
-                end)
+                end
             end
+
+            -- Auto Rebirth
+            if AutoRebirth then
+                if plr.leaderstats.Rebirths.Value < 1000 then
+                    remotes.Rebirth:InvokeServer()
+                end
+            end
+
+            -- Auto Collect
+            if AutoCollect then
+                for _,v in pairs(Workspace:GetDescendants()) do
+                    if v:IsA("Part") and v.Name == "Cash" then
+                        root.CFrame = v.CFrame + Vector3.new(0,2,0)
+                        remotes.Collect:FireServer(v)
+                    end
+                end
+            end
+
         end)
     end
 end)
 
--- ============== FITUR 2: KEBAL / GOD MODE ==============
-LainTab:CreateToggle("🛡️ KEBAL MODE (DARAH TAK TERHENTI)", function(state)
-    Kebal = state
-    if state then
-        spawn(function()
-            while Kebal do wait()
-                pcall(function()
-                    local Char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
-                    local Hum = Char:WaitForChild("Humanoid")
-                    Hum.MaxHealth = math.huge
-                    Hum.Health = math.huge
-                    Hum.HealthChanged:Connect(function() Hum.Health = math.huge end)
-                end)
-            end
-        end)
-    end
-end)
-
--- ============== INFORMASI ==============
-MainTab:CreateLabel("✅ Script Berhasil Dimuat!")
-MainTab:CreateLabel("💡 Fitur sudah disesuaikan dengan game kamu")
-
--- 🔔 NOTIFIKASI
-Library:Notify("🔥 RIKZ HUB SIAP PAKAI!", "TORA STYLE", 3)
+Rayfield:Notify({
+   Title = "Berhasil!",
+   Content = "Script Gumanba Dimuat",
+   Duration = 3
+})
