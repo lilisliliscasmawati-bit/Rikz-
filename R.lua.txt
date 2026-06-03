@@ -1,5 +1,4 @@
 -- ⚡ RIKZ HUB | GAYA MENU KAYAK GAMBAR ⚡
--- 🔹 PAKAI UI LIBRARY BIAR RAPI & MEWAH
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/HuyNamCoder/UI-Library/main/Source.lua"))()
 
 -- 🎨 BIKIN WADAH MENU UTAMA
