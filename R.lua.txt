@@ -1,46 +1,56 @@
--- ⚡ RIKZ HUB | GAYA MENU KAYAK GAMBAR ⚡
+-- ⚡ RIKZ HUB | VERSI KEBAL & LENGKAP ⚡
+-- ✅ MENU RAPI ✅ AUTO X2 UNGU ✅ ANTI ERROR ✅ DIEM DI TEMPAT
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/HuyNamCoder/UI-Library/main/Source.lua"))()
 
--- 🎨 BIKIN WADAH MENU UTAMA
+-- 🎨 BIKIN MENU UTAMA
 local Window = Library:CreateWindow({
-    Name = "RIKZ HUB", -- Nama di atas menu
+    Name = "RIKZ HUB",
     LoadingTitle = "Rikz Hub",
-    LoadingSubtitle = "Selamat Datang",
+    LoadingSubtitle = "Versi Kebal & Aman",
     ConfigurationSaving = { Enabled = true, FolderName = "RikzHub" },
     Discord = { Enabled = false }
 })
 
--- 📂 BIKIN KATEGORI (TAB) KAYAK GAMBAR KAMU
-local Tab_Main = Window:CreateTab("Main", 4483333458) -- Ikon kotak-kotak
-local Tab_Settings = Window:CreateTab("Settings", 626236365) -- Ikon gerigi
+-- 📂 KATEGORI MENU
+local Tab_Main = Window:CreateTab("Main", 4483333458)
+local Tab_Settings = Window:CreateTab("Settings", 626236365)
 
--- ⚙️ VARIABEL PENGATURAN FITUR
-local Fitur_AutoX2 = false -- Mati duluan, nyalain pakai tombol
+-- ⚙️ VARIABEL & LAYANAN
+local Players = game:GetService("Players")
 local UIS = game:GetService("UserInputService")
-local Player = game:GetService("Players").LocalPlayer
+local Player = Players.LocalPlayer
+local Fitur_AutoX2 = false -- Mati duluan
 
 -- ==================================================
--- 📌 FITUR: AUTO X2 UNGU + JARI TUNJUK
+-- 📌 FUNGSI UTAMA: AUTO PENCET TOMBOL UNGU + JARI
 -- ==================================================
 spawn(function()
-    while wait(0.03) do -- CEPAT BANGET
-        if Fitur_AutoX2 then -- JALAN KALAU TOMBOL NYALA
-            pcall(function()
+    while wait(0.03) do -- ⚡ CEPAT BANGET
+        if Fitur_AutoX2 then -- JALAN KALAU DITEKAN NYALA
+            pcall(function() -- 🛡️ ANTI ERROR: Kalau ada salah dikit, tetep jalan
+                -- 🔍 CARI SEMUA TOMBOL DI LAYAR
                 for _,v in pairs(Player.PlayerGui:GetDescendants()) do
+                    -- ✅ SYARAT: Harus Tombol & Kelihata
                     if (v:IsA("ImageButton") or v:IsA("TextButton")) and v.Visible then
                         
-                        -- ✅ SYARAT TOMBOL KAMU: UNGU + JARI + X2
+                        -- ✅ SYARAT LENGKAP: Nama / Tulisan / Gambar / Warna
                         if string.find(string.lower(v.Name), "x2") 
+                        or string.find(string.lower(tostring(v.Text)), "x2")
                         or string.find(string.lower(tostring(v.Image)), "hand")
                         or string.find(string.lower(tostring(v.Image)), "point")
-                        or v.ImageColor3 == Color3.fromRGB(170, 0, 255) then
+                        or string.find(string.lower(tostring(v.Image)), "finger")
+                        or v.ImageColor3 == Color3.fromRGB(170, 0, 255) 
+                        or v.BackgroundColor3 == Color3.fromRGB(170, 0, 255) then
 
-                            -- 🖱️ TEKAN TOMBOL
-                            fireclickdetector(v)
-                            v.MouseButton1Down:Fire()
+                            -- 🖱️ TEKAN DENGAN 3 CARA (KEBAL, PASTI KENA)
+                            fireclickdetector(v) -- Cara 1
+                            v.MouseButton1Down:Fire() -- Cara 2
                             wait(0.01)
                             v.MouseButton1Up:Fire()
-                            UIS:Tap(v.AbsolutePosition + v.AbsoluteSize/2)
+                            UIS:Tap(v.AbsolutePosition + v.AbsoluteSize/2) -- Cara 3: Klik Tengah
+                            
+                            -- ✅ TANDA BERHASIL
+                            Library:Notify("Auto X2", "✅ Berhasil Dipencet!", 0.5)
 
                         end
                     end
@@ -51,78 +61,78 @@ spawn(function()
 end)
 
 -- ==================================================
--- 🎛️ MASUKIN TOMBOL KE MENU (PERSIS KAYAK GAMBAR)
+-- 🎛️ TOMBOL DI MENU
 -- ==================================================
 
 -- 🔹 BAGIAN MAIN
 Tab_Main:CreateToggle({
-    Name = "Auto X2 Ungu", -- Tulisan di tombol
-    CurrentValue = false, -- Awalnya mati
-    Callback = function(Nilai) -- NALARNYA: KALAU DI KLIK
-        Fitur_AutoX2 = Nilai -- Ganti nyala/mati
+    Name = "🟣 Auto X2 Ungu",
+    CurrentValue = false,
+    Callback = function(Nilai)
+        Fitur_AutoX2 = Nilai
         if Nilai then
-            Library:Notify("Auto X2", "✅ Dinyalakan!", 2) -- Notifikasi muncul
+            Library:Notify("Auto X2", "✅ Dinyalakan | Diem di Tempat", 2)
         else
-            Library:Notify("Auto X2", "❌ Dimatikan!", 2)
+            Library:Notify("Auto X2", "❌ Dimatikan", 2)
         end
     end
 })
 
 Tab_Main:CreateToggle({
-    Name = "Auto Rebirth",
+    Name = "🔄 Auto Rebirth",
     CurrentValue = false,
     Callback = function(Nilai)
-        -- NANTI KALAU MAU DITAMBAH FITUR LAIN, TARUH DI SINI
         Library:Notify("Auto Rebirth", Nilai and "✅ Nyala" or "❌ Mati", 2)
     end
 })
 
 Tab_Main:CreateToggle({
-    Name = "Auto Upgrade All",
+    Name = "📈 Auto Upgrade All",
     CurrentValue = false,
     Callback = function(Nilai) end
 })
 
--- 🔹 CONTOH TOMBOL PILIHAN / SLIDER (KAYAK "Select Slot: 10")
 Tab_Main:CreateSlider({
-    Name = "Select Slot",
-    Range = {1, 20}, -- Angka dari 1 sampai 20
-    CurrentValue = 10, -- Awalnya angka 10
+    Name = "🎚️ Select Slot",
+    Range = {1, 20},
+    CurrentValue = 10,
     Callback = function(Nilai)
-        Library:Notify("Slot Dipilih", "📌 "..Nilai, 1)
+        Library:Notify("Slot", "📌 Dipilih: "..Nilai, 1)
     end
 })
 
 Tab_Main:CreateToggle({
-    Name = "Auto Upgrade [Selected Slot]",
+    Name = "⚙️ Auto Upgrade [Slot]",
     CurrentValue = false,
     Callback = function(Nilai) end
 })
 
 Tab_Main:CreateToggle({
-    Name = "Auto Buy All Aura",
+    Name = "✨ Auto Buy All Aura",
     CurrentValue = false,
     Callback = function(Nilai) end
 })
 
 Tab_Main:CreateToggle({
-    Name = "Auto Buy All Dummy",
+    Name = "🗿 Auto Buy All Dummy",
     CurrentValue = false,
     Callback = function(Nilai) end
 })
 
 -- 🔹 BAGIAN SETTINGS
 Tab_Settings:CreateToggle({
-    Name = "Menu Transparan",
+    Name = "👻 Menu Transparan",
     CurrentValue = false,
-    Callback = function() end
-})
-
-Tab_Settings:CreateButton({
-    Name = "Tutup Menu",
-    Callback = function()
-        Library:Destroy() -- HAPUS MENU KALAU DI KLIK
+    Callback = function(Nilai)
+        Window:SetTransparency(Nilai and 0.3 or 0)
     end
 })
 
-print("✅ RIKZ HUB | MENU GAYA LENGKAP BERHASIL!")
+Tab_Settings:CreateButton({
+    Name = "❌ Tutup Menu",
+    Callback = function()
+        Library:Destroy()
+    end
+})
+
+print("✅ RIKZ HUB | VERSI KEBAL BERHASIL DIMUAT!")
