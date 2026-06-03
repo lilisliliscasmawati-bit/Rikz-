@@ -1,0 +1,128 @@
+-- ⚡ RIKZ HUB | GAYA MENU KAYAK GAMBAR ⚡
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/HuyNamCoder/UI-Library/main/Source.lua"))()
+
+-- 🎨 BIKIN WADAH MENU UTAMA
+local Window = Library:CreateWindow({
+    Name = "RIKZ HUB", -- Nama di atas menu
+    LoadingTitle = "Rikz Hub",
+    LoadingSubtitle = "Selamat Datang",
+    ConfigurationSaving = { Enabled = true, FolderName = "RikzHub" },
+    Discord = { Enabled = false }
+})
+
+-- 📂 BIKIN KATEGORI (TAB) KAYAK GAMBAR KAMU
+local Tab_Main = Window:CreateTab("Main", 4483333458) -- Ikon kotak-kotak
+local Tab_Settings = Window:CreateTab("Settings", 626236365) -- Ikon gerigi
+
+-- ⚙️ VARIABEL PENGATURAN FITUR
+local Fitur_AutoX2 = false -- Mati duluan, nyalain pakai tombol
+local UIS = game:GetService("UserInputService")
+local Player = game:GetService("Players").LocalPlayer
+
+-- ==================================================
+-- 📌 FITUR: AUTO X2 UNGU + JARI TUNJUK
+-- ==================================================
+spawn(function()
+    while wait(0.03) do -- CEPAT BANGET
+        if Fitur_AutoX2 then -- JALAN KALAU TOMBOL NYALA
+            pcall(function()
+                for _,v in pairs(Player.PlayerGui:GetDescendants()) do
+                    if (v:IsA("ImageButton") or v:IsA("TextButton")) and v.Visible then
+                        
+                        -- ✅ SYARAT TOMBOL KAMU: UNGU + JARI + X2
+                        if string.find(string.lower(v.Name), "x2") 
+                        or string.find(string.lower(tostring(v.Image)), "hand")
+                        or string.find(string.lower(tostring(v.Image)), "point")
+                        or v.ImageColor3 == Color3.fromRGB(170, 0, 255) then
+
+                            -- 🖱️ TEKAN TOMBOL
+                            fireclickdetector(v)
+                            v.MouseButton1Down:Fire()
+                            wait(0.01)
+                            v.MouseButton1Up:Fire()
+                            UIS:Tap(v.AbsolutePosition + v.AbsoluteSize/2)
+
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+-- ==================================================
+-- 🎛️ MASUKIN TOMBOL KE MENU (PERSIS KAYAK GAMBAR)
+-- ==================================================
+
+-- 🔹 BAGIAN MAIN
+Tab_Main:CreateToggle({
+    Name = "Auto X2 Ungu", -- Tulisan di tombol
+    CurrentValue = false, -- Awalnya mati
+    Callback = function(Nilai) -- NALARNYA: KALAU DI KLIK
+        Fitur_AutoX2 = Nilai -- Ganti nyala/mati
+        if Nilai then
+            Library:Notify("Auto X2", "✅ Dinyalakan!", 2) -- Notifikasi muncul
+        else
+            Library:Notify("Auto X2", "❌ Dimatikan!", 2)
+        end
+    end
+})
+
+Tab_Main:CreateToggle({
+    Name = "Auto Rebirth",
+    CurrentValue = false,
+    Callback = function(Nilai)
+        -- NANTI KALAU MAU DITAMBAH FITUR LAIN, TARUH DI SINI
+        Library:Notify("Auto Rebirth", Nilai and "✅ Nyala" or "❌ Mati", 2)
+    end
+})
+
+Tab_Main:CreateToggle({
+    Name = "Auto Upgrade All",
+    CurrentValue = false,
+    Callback = function(Nilai) end
+})
+
+-- 🔹 CONTOH TOMBOL PILIHAN / SLIDER (KAYAK "Select Slot: 10")
+Tab_Main:CreateSlider({
+    Name = "Select Slot",
+    Range = {1, 20}, -- Angka dari 1 sampai 20
+    CurrentValue = 10, -- Awalnya angka 10
+    Callback = function(Nilai)
+        Library:Notify("Slot Dipilih", "📌 "..Nilai, 1)
+    end
+})
+
+Tab_Main:CreateToggle({
+    Name = "Auto Upgrade [Selected Slot]",
+    CurrentValue = false,
+    Callback = function(Nilai) end
+})
+
+Tab_Main:CreateToggle({
+    Name = "Auto Buy All Aura",
+    CurrentValue = false,
+    Callback = function(Nilai) end
+})
+
+Tab_Main:CreateToggle({
+    Name = "Auto Buy All Dummy",
+    CurrentValue = false,
+    Callback = function(Nilai) end
+})
+
+-- 🔹 BAGIAN SETTINGS
+Tab_Settings:CreateToggle({
+    Name = "Menu Transparan",
+    CurrentValue = false,
+    Callback = function() end
+})
+
+Tab_Settings:CreateButton({
+    Name = "Tutup Menu",
+    Callback = function()
+        Library:Destroy() -- HAPUS MENU KALAU DI KLIK
+    end
+})
+
+print("✅ RIKZ HUB | MENU GAYA LENGKAP BERHASIL!")
