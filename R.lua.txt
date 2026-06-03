@@ -1,18 +1,38 @@
--- ✅ AUTO PENCET X2 SAJA | DIEM DI TEMPAT
+-- ✅ AUTO PENCET X2 | KHUSUS GAMBAR TANGAN + X2
+-- ✅ DIEM DI TEMPAT, GAK PINDAH
 local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
 local Player = Players.LocalPlayer
 
 spawn(function()
     while true do
-        wait(0.08)
+        wait(0.05) -- ⚡ LEBIH CEPAT BIAR LANGSUNG KENA
         pcall(function()
+            -- 🔍 CARI SEMUA TOMBOL DI LAYAR
             for _,v in pairs(Player.PlayerGui:GetDescendants()) do
                 if (v:IsA("ImageButton") or v:IsA("TextButton")) and v.Visible then
-                    if string.find(string.lower(v.Name), "x2") or string.find(string.lower(v.Name), "2x") or string.find(string.lower(v.Name), "double") or string.find(string.lower(v.Name), "multiplier") then
+                    
+                    -- ✅ CARI BERDASARKAN NAMA / TULISAN / GAMBAR
+                    if string.find(string.lower(v.Name), "x2") 
+                    or string.find(string.lower(v.Name), "double")
+                    or string.find(string.lower(v.Name), "reward")
+                    or string.find(string.lower(v.Name), "click")
+                    or string.find(string.lower(tostring(v.Text)), "x2") 
+                    or string.find(string.lower(tostring(v.Image)), "hand") then
+
+                        -- 🖱️ TEKAN DENGAN 3 CARA BIAR PASTI MASUK
                         fireclickdetector(v)
                         v.MouseButton1Down:Fire()
-                        wait(0.02)
+                        wait(0.01)
                         v.MouseButton1Up:Fire()
+                        
+                        -- 🔄 PAKSA KLIK TENGAH-TENGAH TOMBOL
+                        local btnPos = v.AbsolutePosition
+                        local btnSize = v.AbsoluteSize
+                        local centerX = btnPos.X + btnSize.X/2
+                        local centerY = btnPos.Y + btnSize.Y/2
+                        UserInputService:Tap(Vector2.new(centerX, centerY))
+
                     end
                 end
             end
@@ -20,4 +40,4 @@ spawn(function()
     end
 end)
 
-print("✅ SUDAH AKTIF: PENCET X2 OTOMATIS, DIEM AJA!")
+print("✅ SUDAH DIPERBAIKI: AUTO X2 AKTIF! (PASTI KENA GAMBAR TANGAN)")
