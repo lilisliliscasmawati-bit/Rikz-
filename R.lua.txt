@@ -1,33 +1,63 @@
--- ✅ KHUSUS AUTO PENCET TOMBOL X2
+-- ==================================================
+-- ✅ SKRIP LENGKAP: AUTO TRAIN + AUTO X2
+-- ==================================================
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local RootPart = Character:FindFirstChild("HumanoidRootPart")
 
+-- 🔄 PERBARIN BADAN KALAU MATI
+Player.CharacterAdded:Connect(function(Baru)
+    Character = Baru
+    RootPart = Character:WaitForChild("HumanoidRootPart")
+end)
+
+-- ==================================================
+-- 🚆 AUTO TRAIN / LATIHAN OTOMATIS
+-- ==================================================
 spawn(function()
     while true do
-        wait(0.1) -- ⚡ CEPAT BANGET, BIAR GAK KETINGGALAN
+        wait(0.2)
         pcall(function()
-            -- 🔍 CARI DI LAYAR (PlayerGui)
-            for _, v in pairs(Player.PlayerGui:GetDescendants()) do
-                
-                -- ✅ SYARAT: Harus TOMBOL & KELIHATAN
-                if (v:IsA("ImageButton") or v:IsA("TextButton")) and v.Visible then
-                    
-                    -- ✅ CARI NAMA YANG ADA TULISAN "X2" / "x2" / "2x"
-                    if string.find(string.lower(v.Name), "x2") 
-                    or string.find(string.lower(v.Name), "2x") then
-
-                        -- 🖱️ PERINTAH UTAMA: TEKAN OTOMATIS
-                        fireclickdetector(v)
-                        
-                        -- 🔄 KALAU HARUS DITEKAN TERUS:
-                        v.MouseButton1Down:Fire() -- TEKAN BAWA
-                        wait(0.02)
-                        v.MouseButton1Up:Fire() -- LEPAS
-
-                        print("✅ BERHASIL MENCET X2!") -- TANDA BERHASIL DI KONSOLE
+            if not RootPart then return end
+            for _,v in pairs(workspace:GetDescendants()) do
+                if v:IsA("Part") and (string.find(string.lower(v.Name), "train") 
+                or string.find(string.lower(v.Name), "gym") 
+                or string.find(string.lower(v.Name), "latih")) then
+                    RootPart.CFrame = v.CFrame + Vector3.new(0, 2, 0)
+                    -- KIRIM PERINTAH
+                    if game:GetService("ReplicatedStorage"):FindFirstChild("Remotes", true) then
+                        game:GetService("ReplicatedStorage").Remotes:FindFirstChild("Train", true):FireServer()
                     end
                 end
             end
         end)
     end
 end)
+
+-- ==================================================
+-- 🎛️ AUTO PENCET TOMBOL X2 / 2X / DOUBLE
+-- ==================================================
+spawn(function()
+    while true do
+        wait(0.1) -- ⚡ CEPAT BANGET
+        pcall(function()
+            for _,v in pairs(Player.PlayerGui:GetDescendants()) do
+                if (v:IsA("ImageButton") or v:IsA("TextButton")) and v.Visible then
+                    if string.find(string.lower(v.Name), "x2") 
+                    or string.find(string.lower(v.Name), "2x") 
+                    or string.find(string.lower(v.Name), "double") then
+                        -- TEKAN OTOMATIS
+                        fireclickdetector(v)
+                        -- TEKAN + LEPAS
+                        v.MouseButton1Down:Fire()
+                        wait(0.02)
+                        v.MouseButton1Up:Fire()
+                    end
+                end
+            end
+        end)
+    end
+end)
+
+print("✅ BERHASIL! SEMUA FITUR JALAN!")
