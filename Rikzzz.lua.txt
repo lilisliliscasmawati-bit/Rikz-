@@ -1,0 +1,117 @@
+-- RIKZ SCRIPT | KHUSUS GAME KEKUATAN --
+local Player = game:GetService("Players").LocalPlayer
+local UIS = game:GetService("UserInputService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- BIKIN MENU --
+local SG = Instance.new("ScreenGui", game.CoreGui)
+SG.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+local Main = Instance.new("Frame", SG)
+Main.BackgroundColor3 = Color3.fromRGB(20,20,20)
+Main.Position = UDim2.new(0.02,0,0.02,0)
+Main.Size = UDim2.new(0,220,0,280)
+Main.Active = true
+Main.Draggable = true
+
+local Judul = Instance.new("TextLabel", Main)
+Judul.BackgroundColor3 = Color3.fromRGB(40,40,40)
+Judul.Size = UDim2.new(1,0,0,40)
+Judul.Font = Enum.Font.GothamBold
+Judul.Text = "⚡ RIKZ SCRIPT ⚡"
+Judul.TextColor3 = Color3.new(1,0.8,0)
+Judul.TextSize = 16
+
+-- TOMBOL --
+local B1 = Instance.new("TextButton", Main)
+B1.Position = UDim2.new(0.1,0,0.15,0)
+B1.Size = UDim2.new(0.8,0,0,40)
+B1.BackgroundColor3 = Color3.fromRGB(150,40,40)
+B1.Font = Enum.Font.Gotham
+B1.Text = "💥 DAMAGE MAX"
+B1.TextColor3 = Color3.new(1,1,1)
+B1.TextSize = 14
+
+local B2 = Instance.new("TextButton", Main)
+B2.Position = UDim2.new(0.1,0,0.35,0)
+B2.Size = UDim2.new(0.8,0,0,40)
+B2.BackgroundColor3 = Color3.fromRGB(50,120,50)
+B2.Font = Enum.Font.Gotham
+B2.Text = "🛡️ KEBAL"
+B2.TextColor3 = Color3.new(1,1,1)
+B2.TextSize = 14
+
+local B3 = Instance.new("TextButton", Main)
+B3.Position = UDim2.new(0.1,0,0.55,0)
+B3.Size = UDim2.new(0.8,0,0,40)
+B3.BackgroundColor3 = Color3.fromRGB(120,80,50)
+B3.Font = Enum.Font.Gotham
+B3.Text = "🏃 KENCANG"
+B3.TextColor3 = Color3.new(1,1,1)
+B3.TextSize = 14
+
+local B4 = Instance.new("TextButton", Main)
+B4.Position = UDim2.new(0.1,0,0.75,0)
+B4.Size = UDim2.new(0.8,0,0,40)
+B4.BackgroundColor3 = Color3.fromRGB(100,30,30)
+B4.Font = Enum.Font.Gotham
+B4.Text = "❌ TUTUP"
+B4.TextColor3 = Color3.new(1,1,1)
+B4.TextSize = 14
+
+-- FUNGSI DAMAGE MAX (PAS BUAT GAME INI)
+local Aktif = false
+B1.MouseButton1Click:Connect(function()
+    Aktif = not Aktif
+    B1.BackgroundColor3 = Aktif and Color3.fromRGB(220,60,60) or Color3.fromRGB(150,40,40)
+    
+    if Aktif then
+        -- UBAH KEKUATAN JADI TAK TERBATAS
+        spawn(function()
+            while Aktif do wait()
+                pcall(function()
+                    -- Ambil statistik & ganti jadi angka paling besar
+                    local leaderstats = Player:FindFirstChild("leaderstats") or Player:FindFirstChild("Stats")
+                    if leaderstats then
+                        if leaderstats:FindFirstChild("Strength") then leaderstats.Strength.Value = 9e99 end
+                        if leaderstats:FindFirstChild("Kekuatan") then leaderstats.Kekuatan.Value = 9e99 end
+                        if leaderstats:FindFirstChild("Power") then leaderstats.Power.Value = 9e99 end
+                    end
+                    
+                    -- Tambah Damage Lewat Remote
+                    for _,v in pairs(ReplicatedStorage:GetDescendants()) do
+                        if v:IsA("RemoteEvent") and (v.Name:lower():find("hit") or v.Name:lower():find("attack") or v.Name:lower():find("damage")) then
+                            v.OnServerEvent:Connect(function(plr,tar,dmg)
+                                if plr == Player then
+                                    v:FireServer(tar, 999999999) -- PAKAI ANGKA PALING BESAR
+                                end
+                            end)
+                        end
+                    end
+                end)
+            end
+        end)
+    end
+end)
+
+-- FUNGSI KEBAL
+B2.MouseButton1Click:Connect(function()
+    local Char = Player.Character or Player.CharacterAdded:Wait()
+    local Hum = Char:WaitForChild("Humanoid")
+    Hum.MaxHealth = math.huge
+    Hum.Health = math.huge
+    Hum.HealthChanged:Connect(function() Hum.Health = Hum.MaxHealth end)
+    B2.Text = "✅ SUDAH KEBAL"
+end)
+
+-- FUNGSI KENCANG
+B3.MouseButton1Click:Connect(function()
+    local Char = Player.Character or Player.CharacterAdded:Wait()
+    local Hum = Char:WaitForChild("Humanoid")
+    Hum.WalkSpeed = 200
+    Hum.JumpPower = 100
+    B3.Text = "✅ SUDAH KENCANG"
+end)
+
+-- TUTUP
+B4.MouseButton1Click:Connect(function() SG:Destroy() end)
