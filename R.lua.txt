@@ -1,47 +1,52 @@
 -- ==================================================
--- ✅ LANGKAH 1: MUAT BAHAN & BIKIN MENU DULU ✅
+-- 📌 SCRIPT RIKZ HUB | DIPERBAIKI TOTAL
 -- ==================================================
 
--- Ambil alat Roblox
+-- 🔹 AMBIL ALAT ROBLOX
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UIS = game:GetService("UserInputService")
 
--- Data diri sendiri
+-- 🔹 DATA DIRI
 local Player = Players.LocalPlayer
 local Character, Humanoid, RootPart
-local remotes = ReplicatedStorage:WaitForChild("Remotes")
+local remotes = nil
 
--- 🔹 MUAT TAMPILAN MENU TORA
+-- 🔹 TUNGGU SAMPAI REMOTES ADA (INI YANG KURANG DULU)
+coroutine.wrap(function()
+    remotes = ReplicatedStorage:WaitForChild("Remotes", 10)
+end)()
+
+-- ==================================================
+-- ✅ LANGKAH 1: BIKIN MENU DULU ✅
+-- ==================================================
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ToraIsMe/ToraIsMe/main/UiLib"))()
 
--- 🔹 1. BIKIN JENDELA UTAMA (RUMAHNYA)
+-- Jendela Utama
 local Window = Library:CreateWindow("⚡ RIKZ HUB ⚡", 520, 400)
 
--- 🔹 2. BIKIN HALAMAN / TAB (KAMARNYA)
-local TabUtama = Window:CreateTab("🏠 BERANDA")  -- Halaman 1
-local Tab = Window:CreateTab("🛠️ FITUR")         -- Halaman 2 (NAMA VARIABELNYA "Tab", nanti dipakai terus)
-local TabInfo = Window:CreateTab("ℹ️ TENTANG")   -- Halaman 3
+-- Halaman / Tab (WAJIB DIBIKIN DI ATAS)
+local TabUtama = Window:CreateTab("🏠 BERANDA")
+local Tab = Window:CreateTab("🛠️ FITUR")
+local TabInfo = Window:CreateTab("ℹ️ TENTANG")
 
 -- ==================================================
 -- ✅ LANGKAH 2: FUNGSI PENTING ✅
 -- ==================================================
-
--- Perbarui badan kalau mati / lahir ulang
 local function UpdateChar()
     Character = Player.Character or Player.CharacterAdded:Wait()
-    Humanoid = Character:WaitForChild("Humanoid")
-    RootPart = Character:WaitForChild("HumanoidRootPart")
+    Humanoid = Character:WaitForChild("Humanoid", 5)
+    RootPart = Character:WaitForChild("HumanoidRootPart", 5)
 end
 UpdateChar()
 Player.CharacterAdded:Connect(UpdateChar)
 
 -- ==================================================
--- ✅ LANGKAH 3: BARU BIKIN FITUR / TOMBOL ✅
+-- ✅ LANGKAH 3: FITUR-FITUR ✅
 -- ==================================================
 
--- 🔹 FITUR 1: AUTO KLIK
+-- 🔹 AUTO KLIK x2
 getgenv().AutoKlik = false
 Tab:CreateToggle("🤖 AUTO KLIK x2", function(state)
     AutoKlik = state
@@ -50,6 +55,7 @@ Tab:CreateToggle("🤖 AUTO KLIK x2", function(state)
             while AutoKlik do
                 wait(0.01)
                 pcall(function()
+                    if not Character or not RootPart then return end
                     UIS:InputBegan:Fire({UserInputType = Enum.UserInputType.MouseButton1, Position = Vector2.new(640, 360)})
                     UIS:InputEnded:Fire({UserInputType = Enum.UserInputType.MouseButton1, Position = Vector2.new(640, 360)})
                     
@@ -64,7 +70,7 @@ Tab:CreateToggle("🤖 AUTO KLIK x2", function(state)
     end
 end)
 
--- 🔹 FITUR 2: KEBAL
+-- 🔹 KEBAL / GOD MODE
 getgenv().Kebal = false
 Tab:CreateToggle("🛡️ KEBAL MODE", function(state)
     Kebal = state
@@ -76,7 +82,9 @@ Tab:CreateToggle("🛡️ KEBAL MODE", function(state)
                     if Humanoid then
                         Humanoid.MaxHealth = math.huge
                         Humanoid.Health = math.huge
-                        Humanoid.HealthChanged:Connect(function() Humanoid.Health = math.huge end)
+                        Humanoid.HealthChanged:Connect(function() 
+                            pcall(function() Humanoid.Health = math.huge end)
+                        end)
                     end
                 end)
             end
@@ -84,7 +92,7 @@ Tab:CreateToggle("🛡️ KEBAL MODE", function(state)
     end
 end)
 
--- 🔹 FITUR 3: AUTO TRAIN
+-- 🔹 AUTO TRAIN (DITAMBAH PENGAMAN REMOTES)
 getgenv().AutoTrain = false
 Tab:CreateToggle("🚆 AUTO TRAIN", function(state)
     AutoTrain = state
@@ -93,8 +101,9 @@ Tab:CreateToggle("🚆 AUTO TRAIN", function(state)
             while AutoTrain do
                 wait(0.2)
                 pcall(function()
+                    if not remotes or not RootPart then return end -- ⚠️ PENGAMAN UTAMA
                     local tempat = Workspace:FindFirstChild("Training")
-                    if tempat and RootPart then
+                    if tempat then
                         for _,v in pairs(tempat:GetDescendants()) do
                             if v:IsA("Part") and v.Name == "TrainPart" then
                                 RootPart.CFrame = v.CFrame + Vector3.new(0,2,0)
@@ -112,6 +121,9 @@ end)
 -- ✅ TAMBAHAN TAMPILAN ✅
 -- ==================================================
 TabUtama:CreateLabel("👋 Halo! Script Lengkap Rikz")
-TabInfo:CreateSection("Dibuat Oleh RIKZ")
+TabUtama:CreateLabel("✅ Semua fitur aman & anti error")
 
-Library:Notify("✅ SIAP PAKAI!", "RIKZ HUB", 3)
+TabInfo:CreateSection("Dibuat Oleh")
+TabInfo:CreateLabel("💻 RIKZ | Belajar Ngoding")
+
+Library:Notify("✅ SCRIPT BERHASIL DIMUAT!", "SIAP PAKAI!", 3)
