@@ -1,180 +1,34 @@
--- Tora Hub | Kick a Lucky Block + AUTO TRAIN
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ToraIsMe/ToraIsMe/main/UiLib"))()
-local Window = Library:CreateWindow("🎁 KICK A LUCKY BLOCK | TORA HUB", 550, 400)
-
-local TabUtama = Window:CreateTab("🏠 UTAMA")
-local TabFitur = Window:CreateTab("⚙️ FITUR")
-local TabInfo = Window:CreateTab("ℹ️ INFO")
-
+-- ✅ AUTO TRAIN | TANPA MENU | LANGSUNG JALAN
 local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")
-local UIS = game:GetService("UserInputService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Player = Players.LocalPlayer
-local Character, Humanoid, RootPart
+local Character, RootPart, Remotes
 
--- Update Karakter
+Remotes = ReplicatedStorage:WaitForChild("Remotes")
+
 local function UpdateChar()
     Character = Player.Character or Player.CharacterAdded:Wait()
-    Humanoid = Character:WaitForChild("Humanoid", 10)
-    RootPart = Character:WaitForChild("HumanoidRootPart", 10)
+    RootPart = Character:WaitForChild("HumanoidRootPart")
 end
 UpdateChar()
 Player.CharacterAdded:Connect(UpdateChar)
 
--- 🎯 PERFECT KICK
-getgenv().PerfectKick = false
-TabFitur:CreateToggle({
-    Name = "🎯 PERFECT KICK",
-    CurrentValue = false,
-    Callback = function(state)
-        PerfectKick = state
-        if state then
-            spawn(function()
-                while PerfectKick do
-                    wait(0.05)
-                    pcall(function()
-                        local Remote = ReplicatedStorage:WaitForChild("Remotes", 10):WaitForChild("Kick")
-                        if Remote and RootPart then Remote:FireServer(1000000) end
-                    end)
+-- ✅ LANGSUNG LATIHAN TERUS
+spawn(function()
+    while true do
+        wait(0.2)
+        pcall(function()
+            if not RootPart then return end
+            local Tempat = Workspace:FindFirstChild("Training")
+            if Tempat then
+                for _,v in pairs(Tempat:GetDescendants()) do
+                    if v:IsA("Part") and v.Name == "TrainPart" then
+                        RootPart.CFrame = v.CFrame+Vector3.new(0,2,0)
+                        Remotes.Train:FireServer()
+                    end
                 end
-            end)
-        end
+            end
+        end)
     end
-})
-
--- 🚆 AUTO TRAIN (BARU DITAMBAH!)
-getgenv().AutoTrain = false
-TabFitur:CreateToggle({
-    Name = "🚆 AUTO TRAIN / NAIK KEKUATAN",
-    CurrentValue = false,
-    Callback = function(state)
-        AutoTrain = state
-        if state then
-            spawn(function()
-                while AutoTrain do
-                    wait(0.02)
-                    pcall(function()
-                        -- Klik tombol latihan / angkat beban
-                        for _,v in pairs(Character:GetDescendants()) do
-                            if v:IsA("ProximityPrompt") and (v.Name:find("Train") or v.Name:find("Lift") or v.Name:find("Weight")) then
-                                fireproximityprompt(v)
-                            end
-                        end
-                        -- Klik tombol bonus latihan
-                        for _,v in pairs(Player.PlayerGui:GetDescendants()) do
-                            if v:IsA("ImageButton") and v.Visible and (v.Name:find("Train") or v.Name:find("Lift") or v.Name:find("Bonus")) then
-                                fireclickdetector(v)
-                            end
-                        end
-                        -- Klik otomatis kalau ada tombol tekan
-                        UIS:InputBegan:Fire({UserInputType=Enum.UserInputType.MouseButton1,Position=Vector2.new(640,360)})
-                        UIS:InputEnded:Fire({UserInputType=Enum.UserInputType.MouseButton1,Position=Vector2.new(640,360)})
-                    end)
-                end
-            end)
-        end
-    end
-})
-
--- 🎁 AUTO CLAIM HADIAH
-getgenv().AutoClaim = false
-TabFitur:CreateToggle({
-    Name = "🎁 AUTO CLAIM / AMBIL HADIAH",
-    CurrentValue = false,
-    Callback = function(state)
-        AutoClaim = state
-        if state then
-            spawn(function()
-                while AutoClaim do
-                    wait(0.2)
-                    pcall(function()
-                        for _,v in pairs(Workspace:GetDescendants()) do
-                            if v:IsA("ProximityPrompt") and v.Name == "Claim" and v.Enabled then fireproximityprompt(v) end
-                        end
-                    end)
-                end
-            end)
-        end
-    end
-})
-
--- 💰 AUTO KUMPUL DUIT
-getgenv().AutoCash = false
-TabFitur:CreateToggle({
-    Name = "💰 AUTO KUMPUL DUIT",
-    CurrentValue = false,
-    Callback = function(state)
-        AutoCash = state
-        if state then
-            spawn(function()
-                while AutoCash do
-                    wait(0.1)
-                    pcall(function()
-                        for _,v in pairs(Workspace:GetDescendants()) do
-                            if v:IsA("Part") and v:FindFirstChild("Cash") then RootPart.CFrame=v.CFrame+Vector3.new(0,3,0) end
-                        end
-                    end)
-                end
-            end)
-        end
-    end
-})
-
--- 📈 AUTO UPGRADE SEMUA
-getgenv().AutoUpgrade = false
-TabFitur:CreateToggle({
-    Name = "📈 AUTO UPGRADE SEMUA",
-    CurrentValue = false,
-    Callback = function(state)
-        AutoUpgrade = state
-        if state then
-            spawn(function()
-                while AutoUpgrade do
-                    wait(0.5)
-                    pcall(function()
-                        local Gui = Player.PlayerGui:WaitForChild("MainGui",5)
-                        if Gui and Gui.Visible then
-                            for _,v in pairs(Gui:GetDescendants()) do
-                                if v:IsA("ImageButton") and v.Name:find("Upgrade") and v.Visible then fireclickdetector(v) end
-                            end
-                        end
-                    end)
-                end
-            end)
-        end
-    end
-})
-
--- 🔄 AUTO REBIRTH
-getgenv().AutoRebirth = false
-TabFitur:CreateToggle({
-    Name = "🔄 AUTO REBIRTH",
-    CurrentValue = false,
-    Callback = function(state)
-        AutoRebirth = state
-        if state then
-            spawn(function()
-                while AutoRebirth do
-                    wait(1)
-                    pcall(function()
-                        local RebirthBtn = Player.PlayerGui:WaitForChild("MainGui",5):WaitForChild("RebirthButton",5)
-                        if RebirthBtn and RebirthBtn.Visible then fireclickdetector(RebirthBtn) end
-                    end)
-                end
-            end)
-        end
-    end
-})
-
--- TAMPILAN
-TabUtama:CreateLabel("👋 Selamat Datang di Tora Hub!")
-TabUtama:CreateLabel("✅ Script Khusus: Kick a Lucky Block")
-TabUtama:CreateLabel("⚡ SEMUA FITUR LENGKAP: ADA AUTO TRAIN!")
-
-TabInfo:CreateSection("📝 INFORMASI")
-TabInfo:CreateLabel("💻 Dibuat Oleh: Tora IsMe + Tambahan")
-TabInfo:CreateLabel("🔓 Status: TANPA KUNCI / GRATIS")
-TabInfo:CreateLabel("📌 Versi: 1.1 (LENGKAP)")
-
-Library:Notify("✅ SCRIPT BERHASIL!", "SEMUA FITUR ADA!", 3)
+end)
