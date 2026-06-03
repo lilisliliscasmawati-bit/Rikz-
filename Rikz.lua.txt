@@ -1,0 +1,29 @@
+local Players = game:GetService("Players")
+local UIS = game:GetService("UserInputService")
+local Player = Players.LocalPlayer
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/HuyNamCoder/UI-Library/main/Source.lua"))()
+local Window = Library:CreateWindow({
+   Name = "RIKZ HUB",
+   LoadingTitle = "Lari block",
+   LoadingSubtitle = "Siap Dipakai",
+   ConfigurationSaving = { Enabled = true, FolderName = "RikzHub" },
+   Discord = { Enabled = false }
+}) 
+local Tab_Main = Window:CreateTab("Main", 4483333458)
+local Tab_Settings = Window:CreateTab("Settings", 626236365)
+local AutoX2 = false
+local Kebal = false
+Tab_Main:CreateToggle({
+  Name = "Auto X2",
+  CurrentValue = false,
+  Callback = function(Nilai)
+    AutoX2 = Nilai
+  end
+}) 
+Tab_Settings:CreateButton({
+  Name = "❌ Tutup Menu",
+  Callback = function()
+     Library:Destroy()
+end
+}) 
+print("✅ SCRIPT BERHASIL DIMUAT!")
