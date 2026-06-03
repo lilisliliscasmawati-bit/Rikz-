@@ -1,34 +1,31 @@
--- ✅ AUTO TRAIN | TANPA MENU | LANGSUNG JALAN
+-- ✅ AUTO TRAIN | UDAH ADA DI SINI
+... kode kamu yang lama ...
+
+------------------------------------------------
+
+-- ✅ AUTO PENCET TOMBOL X2 | BARU DITAMBAH
 local Players = game:GetService("Players")
-local Workspace = game:GetService("Workspace")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Player = Players.LocalPlayer
-local Character, RootPart, Remotes
 
-Remotes = ReplicatedStorage:WaitForChild("Remotes")
-
-local function UpdateChar()
-    Character = Player.Character or Player.CharacterAdded:Wait()
-    RootPart = Character:WaitForChild("HumanoidRootPart")
-end
-UpdateChar()
-Player.CharacterAdded:Connect(UpdateChar)
-
--- ✅ LANGSUNG LATIHAN TERUS
 spawn(function()
     while true do
-        wait(0.2)
+        wait(0.15)
         pcall(function()
-            if not RootPart then return end
-            local Tempat = Workspace:FindFirstChild("Training")
-            if Tempat then
-                for _,v in pairs(Tempat:GetDescendants()) do
-                    if v:IsA("Part") and v.Name == "TrainPart" then
-                        RootPart.CFrame = v.CFrame+Vector3.new(0,2,0)
-                        Remotes.Train:FireServer()
+            for _, v in pairs(Player.PlayerGui:GetDescendants()) do
+                if (v:IsA("ImageButton") or v:IsA("TextButton")) and v.Visible then
+                    if string.find(string.lower(v.Name), "x2") 
+                    or string.find(string.lower(v.Name), "2x") 
+                    or string.find(string.lower(v.Name), "double") 
+                    or string.find(string.lower(v.Name), "multiplier") then
+                        fireclickdetector(v)
+                        v.MouseButton1Down:Fire()
+                        wait(0.03)
+                        v.MouseButton1Up:Fire()
                     end
                 end
             end
         end)
     end
 end)
+
+print("✅ SEMUA FITUR JALAN!")
