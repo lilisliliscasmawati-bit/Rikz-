@@ -1,22 +1,21 @@
 -- ⚡ RIKZ HUB | LARI BLOCK ⚡
--- LINK ASLI: https://raw.githubusercontent.com/lilisliliscasmawati-bit/Rikz-/refs/heads/main/Rikz.lua.txt
-
--- ✅ BAGIAN DASAR (SUDAH KAMU BUAT, SUDAH BENAR)
 local Players = game:GetService("Players")
 local UIS = game:GetService("UserInputService")
 local Player = Players.LocalPlayer
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/HuyNamCoder/UI-Library/main/Source.lua"))()
 
--- ✅ BIKIN MENU UTAMA
+-- ✅ GANTI LIBRARY DENGAN YANG PASTI JALAN
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/PeiZ1337/UI-Library/main/Source.lua"))()
+
+-- ✅ BIKIN MENU (RAPI & BENAR)
 local Window = Library:CreateWindow({
     Name = "RIKZ HUB",
-    LoadingTitle = "Lari block",
+    LoadingTitle = "Lari Block",
     LoadingSubtitle = "Siap Dipakai",
     ConfigurationSaving = { Enabled = true, FolderName = "RikzHub" },
     Discord = { Enabled = false }
 })
 
--- ✅ BIKIN KATEGORI
+-- ✅ BIKIN TAB
 local Tab_Main = Window:CreateTab("Main", 4483333458)
 local Tab_Settings = Window:CreateTab("Settings", 626236365)
 
@@ -25,23 +24,19 @@ local AutoX2 = false
 local Kebal = false
 
 -- ==================================================
--- ✅ TAMBAHAN: FUNGSI FITUR AUTO X2
+-- ✅ FITUR AUTO X2
 -- ==================================================
 spawn(function()
-    while wait(0.03) do -- Ulang terus cepat
-        if AutoX2 then -- Jalan kalau tombol nyala
-            pcall(function() -- Anti error biar gak rusak
-                -- Cari semua tombol di layar
+    while wait(0.03) do
+        if AutoX2 then
+            pcall(function()
                 for _,v in pairs(Player.PlayerGui:GetDescendants()) do
                     if (v:IsA("ImageButton") or v:IsA("TextButton")) and v.Visible then
-                        
-                        -- Syarat: Cari tulisan X2, warna ungu, atau gambar tangan
                         if string.find(string.lower(v.Name), "x2") 
                         or string.find(string.lower(tostring(v.Text)), "x2")
                         or v.ImageColor3 == Color3.fromRGB(170, 0, 255) 
                         or v.BackgroundColor3 == Color3.fromRGB(170, 0, 255) then
-
-                            -- Tekan tombolnya
+                            
                             fireclickdetector(v)
                             v.MouseButton1Down:Fire() wait(0.01)
                             v.MouseButton1Up:Fire()
@@ -55,7 +50,7 @@ spawn(function()
 end)
 
 -- ==================================================
--- ✅ TAMBAHAN: FUNGSI MODE KEBAL
+-- ✅ FITUR KEBAL
 -- ==================================================
 spawn(function()
     while wait(0.1) do
@@ -73,14 +68,14 @@ spawn(function()
 end)
 
 -- ==================================================
--- ✅ TOMBOL MENU (SUDAH KAMU BUAT, SAYA TAMBAH NOTIFIKASI)
+-- ✅ TOMBOL MENU
 -- ==================================================
 Tab_Main:CreateToggle({
     Name = "🟣 Auto X2",
     CurrentValue = false,
     Callback = function(Nilai)
         AutoX2 = Nilai
-        Library:Notify("Auto X2", Nilai and "✅ Nyala | Otomatis pencet" or "❌ Mati", 2)
+        Library:Notify("Auto X2", Nilai and "✅ Nyala" or "❌ Mati", 2)
     end
 })
 
@@ -89,12 +84,12 @@ Tab_Main:CreateToggle({
     CurrentValue = false,
     Callback = function(Nilai)
         Kebal = Nilai
-        Library:Notify("Mode Kebal", Nilai and "✅ Gak bisa mati" or "❌ Mati", 2)
+        Library:Notify("Mode Kebal", Nilai and "✅ Nyala" or "❌ Mati", 2)
     end
 })
 
 Tab_Settings:CreateToggle({
-    Name = "👻 Menu Transparan",
+    Name = "👻 Transparan",
     CurrentValue = false,
     Callback = function(Nilai)
         Window:SetTransparency(Nilai and 0.3 or 0)
