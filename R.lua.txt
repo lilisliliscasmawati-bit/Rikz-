@@ -1,67 +1,99 @@
+-- RIKZ HUB | VERSI AMAN 100%
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ToraIsMe/ToraIsMe/main/UiLib"))()
-local Window = Library:CreateWindow("⚡ RIKZ HUB ⚡", 520, 400)
-local TabUtama = Window:CreateTab("🏠 BERANDA")
-local Tab = Window:CreateTab("🛠️ FITUR")
-local TabInfo = Window:CreateTab("ℹ️ TENTANG")
+local Window = Library:CreateWindow("⚡ RIKZ HUB ⚡", 500, 350)
+local Tab1 = Window:CreateTab("🏠 UTAMA")
+local Tab2 = Window:CreateTab("🛠️ FITUR")
 
+-- DATA DASAR
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UIS = game:GetService("UserInputService")
 local Player = Players.LocalPlayer
-local Character, Humanoid, RootPart
-local remotes = ReplicatedStorage:WaitForChild("Remotes", 10)
+local Char, Hum, Root
+local Remotes = ReplicatedStorage:WaitForChild("Remotes", 15)
 
-local function UpdateChar()
-    Character = Player.Character or Player.CharacterAdded:Wait()
-    Humanoid = Character:WaitForChild("Humanoid", 5)
-    RootPart = Character:WaitForChild("HumanoidRootPart", 5)
+-- FUNGSI UPDATE
+local function UbahChar()
+    Char = Player.Character or Player.CharacterAdded:Wait()
+    Hum = Char:WaitForChild("Humanoid", 10)
+    Root = Char:WaitForChild("HumanoidRootPart", 10)
 end
-UpdateChar()
-Player.CharacterAdded:Connect(UpdateChar)
+UbahChar()
+Player.CharacterAdded:Connect(UbahChar)
 
--- AUTO KLIK
-getgenv().AutoKlik = false
-Tab:CreateToggle({
+-- FITUR 1: AUTO KLIK
+local AK = false
+Tab2:CreateToggle({
     Name = "🤖 AUTO KLIK x2",
-    CurrentValue = false,
-    Callback = function(state)
-        AutoKlik = state
-        if state then spawn(function() while AutoKlik do wait(0.01) pcall(function() if not RootPart then return end
-        UIS:InputBegan:Fire({UserInputType=Enum.UserInputType.MouseButton1,Position=Vector2.new(640,360)})
-        UIS:InputEnded:Fire({UserInputType=Enum.UserInputType.MouseButton1,Position=Vector2.new(640,360)})
-        for _,v in pairs(Player.PlayerGui:GetDescendants()) do if v:IsA("ImageButton")and v.Visible and v.AbsoluteSize.X>80 then fireclickdetector(v)end end
-        end) end end) end
+    Callback = function(s)
+        AK = s
+        if s then
+            spawn(function()
+                while AK do
+                    wait(0.01)
+                    pcall(function()
+                        if not Root then return end
+                        UIS:InputBegan:Fire({UserInputType=Enum.UserInputType.MouseButton1,Position=Vector2.new(640,360)})
+                        UIS:InputEnded:Fire({UserInputType=Enum.UserInputType.MouseButton1,Position=Vector2.new(640,360)})
+                        for _,v in pairs(Player.PlayerGui:GetDescendants()) do
+                            if v:IsA("ImageButton") and v.Visible and v.AbsoluteSize.X>70 then fireclickdetector(v) end
+                        end
+                    end)
+                end
+            end)
+        end
     end
 })
 
--- KEBAL
-getgenv().Kebal = false
-Tab:CreateToggle({
+-- FITUR 2: KEBAL
+local KB = false
+Tab2:CreateToggle({
     Name = "🛡️ KEBAL MODE",
-    CurrentValue = false,
-    Callback = function(state)
-        Kebal = state
-        if state then spawn(function() while Kebal do wait() pcall(function() if Humanoid then Humanoid.MaxHealth=math.huge Humanoid.Health=math.huge
-        Humanoid.HealthChanged:Connect(function() pcall(function() Humanoid.Health=math.huge end) end) end end) end end) end
+    Callback = function(s)
+        KB = s
+        if s then
+            spawn(function()
+                while KB do
+                    wait(0.5)
+                    pcall(function()
+                        if Hum then Hum.MaxHealth=math.huge Hum.Health=math.huge end
+                    end)
+                end
+            end)
+        end
     end
 })
 
--- AUTO TRAIN
-getgenv().AutoTrain = false
-Tab:CreateToggle({
+-- FITUR 3: AUTO TRAIN
+local AT = false
+Tab2:CreateToggle({
     Name = "🚆 AUTO TRAIN",
-    CurrentValue = false,
-    Callback = function(state)
-        AutoTrain = state
-        if state then spawn(function() while AutoTrain do wait(0.2) pcall(function() if not remotes or not RootPart then return end
-        local tempat=Workspace:FindFirstChild("Training") if tempat then for _,v in pairs(tempat:GetDescendants()) do if v:IsA("Part")and v.Name=="TrainPart"then
-        RootPart.CFrame=v.CFrame+Vector3.new(0,2,0) remotes.Train:FireServer()end end end end) end end) end
+    Callback = function(s)
+        AT = s
+        if s then
+            spawn(function()
+                while AT do
+                    wait(0.2)
+                    pcall(function()
+                        if not Remotes or not Root then return end
+                        local Tempat = Workspace:FindFirstChild("Training")
+                        if Tempat then
+                            for _,v in pairs(Tempat:GetDescendants()) do
+                                if v:IsA("Part") and v.Name == "TrainPart" then
+                                    Root.CFrame = v.CFrame + Vector3.new(0,2,0)
+                                    Remotes.Train:FireServer()
+                                end
+                            end
+                        end
+                    end)
+                end
+            end)
+        end
     end
 })
 
-TabUtama:CreateLabel("👋 Halo! Script Lengkap Rikz")
-TabUtama:CreateLabel("✅ Semua fitur aman & beres")
-TabInfo:CreateSection("Dibuat Oleh")
-TabInfo:CreateLabel("💻 RIKZ | Belajar Ngoding")
-Library:Notify("✅ SCRIPT BERHASIL!", "SIAP PAKAI!", 3)
+-- TAMPILAN INFO
+Tab1:CreateLabel("👋 Halo! Selamat Menggunakan")
+Tab1:CreateLabel("💻 Dibuat Oleh: RIKZ")
+Library:Notify("✅ BERHASIL DIMUAT!", "RIKZ HUB", 3)
