@@ -1,147 +1,24 @@
--- ⚡ MENU AUTO X2 KHUSUS TOMBOL UNGU ⚡
 local Players = game:GetService("Players")
-local UIS = game:GetService("UserInputService")
+local UIS = game:GetService("UserInputService") -- buat pencet layar
 local Player = Players.LocalPlayer
-local Mouse = Player:GetMouse()
-
--- 🎛️ SETTING MENU
-local Menu = Instance.new("ScreenGui")
-local Main = Instance.new("Frame")
-local Title = Instance.new("TextLabel")
-local BtnAutoX2 = Instance.new("TextButton")
-local Status = Instance.new("TextLabel")
-
--- 🎨 TAMPILAN MENU
-Menu.Name = "AutoX2Menu"
-Menu.Parent = Player:WaitForChild("PlayerGui")
-Menu.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-
-Main.Name = "Main"
-Main.Parent = Menu
-Main.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-Main.BorderSizePixel = 2
-Main.Position = UDim2.new(0.02, 0, 0.02, 0)
-Main.Size = UDim2.new(0, 220, 0, 150)
-Main.Active = true
-Main.Draggable = true -- BISA GESER MENU
-
-Title.Name = "Title"
-Title.Parent = Main
-Title.BackgroundColor3 = Color3.fromRGB(50, 0, 120)
-Title.Size = UDim2.new(1, 0, 0, 30)
-Title.Font = Enum.Font.GothamBold
-Title.Text = "✨ AUTO X2 UNGU ✨"
-Title.TextColor3 = Color3.new(1,1,1)
-Title.TextSize = 14
-Title.TextWrapped = true
-
-BtnAutoX2.Name = "BtnAutoX2"
-BtnAutoX2.Parent = Main
-BtnAutoX2.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-BtnAutoX2.Position = UDim2.new(0.1, 0, 0.35, 0)
-BtnAutoX2.Size = UDim2.new(0.8, 0, 0, 40)
-BtnAutoX2.Font = Enum.Font.Gotham
-BtnAutoX2.Text = "🟢 AUTO X2: NYALA"
-BtnAutoX2.TextColor3 = Color3.new(1,1,1)
-BtnAutoX2.TextSize = 13
-
-Status.Name = "Status"
-Status.Parent = Main
-Status.BackgroundTransparency = 1
-Status.Position = UDim2.new(0, 0, 0.7, 0)
-Status.Size = UDim2.new(1, 0, 0, 30)
-Status.Font = Enum.Font.Gotham
-Status.Text = "✅ SIAP DIPAKAI"
-Status.TextColor3 = Color3.fromRGB(0, 255, 120)
-Status.TextSize = 12
-Status.TextWrapped = true
-
--- ⚙️ VARIABEL PENGATURAN
-local AutoX2_Active = true -- AWALNYA NYALA
-
--- 📌 FUNGSI UTAMA: PENCET TOMBOL X2 UNGU
-spawn(function()
-    while wait(0.03) do -- ⚡ CEPAT BANGET
-        if AutoX2_Active then
-            pcall(function()
-                for _,v in pairs(Player.PlayerGui:GetDescendants()) do
-                    if v:IsA("ImageButton") and v.Visible then
-                        -- ✅ SYARAT: TOMBOL UNGU + GAMBAR JARI + ADA X2
-                        if (string.find(string.lower(v.Name), "x2") or string.find(string.lower(tostring(v.Text)), "x2")) 
-                        and (string.find(string.lower(tostring(v.Image)), "hand") or string.find(string.lower(tostring(v.Image)), "point") or string.find(string.lower(tostring(v.Image)), "finger"))
-                        and (v.BackgroundColor3 == Color3.fromRGB(170, 0, 255) or v.ImageColor3 == Color3.fromRGB(170, 0, 255)) then
-                            
-                            -- 🖱️ TEKAN TOMBOL
-                            fireclickdetector(v)
-                            v.MouseButton1Down:Fire()
-                            wait(0.01)
-                            v.MouseButton1Up:Fire()
-                            
-                            -- 🔄 KLIK TENGAH LINGKARAN
-                            local pos = v.AbsolutePosition
-                            local size = v.AbsoluteSize
-                            UIS:Tap(Vector2.new(pos.X + size.X/2, pos.Y + size.Y/2))
-                            
-                            Status.Text = "✅ BERHASIL KEPENCET!"
-                            Status.TextColor3 = Color3.fromRGB(0, 255, 120)
-                            wait(0.05)
-                            Status.Text = "⏳ MENUNGGU TOMBOL..."
-                            Status.TextColor3 = Color3.fromRGB(255, 200, 0)
-                        end
-                    end
-                end
-            end)
-        end
-    end
-end)
-
--- 🔘 TOMBOL ON/OFF
-BtnAutoX2.MouseButton1Click:Connect(function()
-    AutoX2_Active = not AutoX2_Active
-    if AutoX2_Active then
-        BtnAutoX2.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-        BtnAutoX2.Text = "🟢 AUTO X2: NYALA"
-        Status.Text = "✅ FITUR DIAKTIFKAN"
-        Status.TextColor3 = Color3.fromRGB(0, 255, 120)
-    else
-        BtnAutoX2.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
-        BtnAutoX2.Text = "🔴 AUTO X2: MATI"
-        Status.Text = "❌ FITUR DIMATIKAN"
-        Status.TextColor3 = Color3.fromRGB(255, 50, 50)
-    end
-end)
-
-print("✅ SCRIPT MENU BERHASIL DIMUAT! | AUTO X2 UNGU + JARI")
 
 spawn(function()
-    while true do
-        wait(0.05) -- ⚡ LEBIH CEPAT BIAR LANGSUNG KENA
+    while wait(0.03) do
         pcall(function()
-            -- 🔍 CARI SEMUA TOMBOL DI LAYAR
             for _,v in pairs(Player.PlayerGui:GetDescendants()) do
                 if (v:IsA("ImageButton") or v:IsA("TextButton")) and v.Visible then
-                    
-                    -- ✅ CARI BERDASARKAN NAMA / TULISAN / GAMBAR
-                    if string.find(string.lower(v.Name), "x2") 
-                    or string.find(string.lower(v.Name), "double")
-                    or string.find(string.lower(v.Name), "reward")
-                    or string.find(string.lower(v.Name), "click")
-                    or string.find(string.lower(tostring(v.Text)), "x2") 
-                    or string.find(string.lower(tostring(v.Image)), "hand") then
+                    -- ✅ SYARAT LENGKAP & RAPI
+                    if string.find(string.lower(v.Name), "x2")
+                    or string.find(string.lower(tostring(v.Image)), "hand")
+                    or v.ImageColor3 == Color3.fromRGB(170, 0, 255) then
 
-                        -- 🖱️ TEKAN DENGAN 3 CARA BIAR PASTI MASUK
-                        fireclickdetector(v)
-                        v.MouseButton1Down:Fire()
+                        fireclickdetector(v) -- cara 1
+                        v.MouseButton1Down:Fire() -- cara 2
                         wait(0.01)
                         v.MouseButton1Up:Fire()
-                        
-                        -- 🔄 PAKSA KLIK TENGAH-TENGAH TOMBOL
-                        local btnPos = v.AbsolutePosition
-                        local btnSize = v.AbsoluteSize
-                        local centerX = btnPos.X + btnSize.X/2
-                        local centerY = btnPos.Y + btnSize.Y/2
-                        UserInputService:Tap(Vector2.new(centerX, centerY))
+                        UIS:Tap(v.AbsolutePosition + v.AbsoluteSize/2) -- cara 3: klik tengah
 
+                        print("✅ BERHASIL PENCET X2!")
                     end
                 end
             end
@@ -149,4 +26,4 @@ spawn(function()
     end
 end)
 
-print("✅ SUDAH DIPERBAIKI: AUTO X2 AKTIF! (PASTI KENA GAMBAR TANGAN)"
+print("✅ SCRIPT SIAP JALAN!")
