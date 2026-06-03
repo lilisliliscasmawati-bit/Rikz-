@@ -1,0 +1,119 @@
+-- RIKZ SCRIPT | ATTACK SPEED + KEBAL + KENCANG --
+local Player = game:GetService("Players").LocalPlayer
+local UIS = game:GetService("UserInputService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- BIKIN MENU --
+local SG = Instance.new("ScreenGui", game.CoreGui)
+SG.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+local Main = Instance.new("Frame", SG)
+Main.BackgroundColor3 = Color3.fromRGB(20,20,20)
+Main.Position = UDim2.new(0.02,0,0.02,0)
+Main.Size = UDim2.new(0,220,0,280)
+Main.Active = true
+Main.Draggable = true
+
+local Judul = Instance.new("TextLabel", Main)
+Judul.BackgroundColor3 = Color3.fromRGB(40,40,40)
+Judul.Size = UDim2.new(1,0,0,40)
+Judul.Font = Enum.Font.GothamBold
+Judul.Text = "⚡ RIKZ SCRIPT ⚡"
+Judul.TextColor3 = Color3.new(1,0.8,0)
+Judul.TextSize = 16
+
+-- TOMBOL --
+local B1 = Instance.new("TextButton", Main)
+B1.Position = UDim2.new(0.1,0,0.15,0)
+B1.Size = UDim2.new(0.8,0,0,40)
+B1.BackgroundColor3 = Color3.fromRGB(180,60,120)
+B1.Font = Enum.Font.Gotham
+B1.Text = "⚡ ATTACK SPEED"
+B1.TextColor3 = Color3.new(1,1,1)
+B1.TextSize = 14
+
+local B2 = Instance.new("TextButton", Main)
+B2.Position = UDim2.new(0.1,0,0.35,0)
+B2.Size = UDim2.new(0.8,0,0,40)
+B2.BackgroundColor3 = Color3.fromRGB(50,120,50)
+B2.Font = Enum.Font.Gotham
+B2.Text = "🛡️ KEBAL"
+B2.TextColor3 = Color3.new(1,1,1)
+B2.TextSize = 14
+
+local B3 = Instance.new("TextButton", Main)
+B3.Position = UDim2.new(0.1,0,0.55,0)
+B3.Size = UDim2.new(0.8,0,0,40)
+B3.BackgroundColor3 = Color3.fromRGB(120,80,50)
+B3.Font = Enum.Font.Gotham
+B3.Text = "🏃 KENCANG"
+B3.TextColor3 = Color3.new(1,1,1)
+B3.TextSize = 14
+
+local B4 = Instance.new("TextButton", Main)
+B4.Position = UDim2.new(0.1,0,0.75,0)
+B4.Size = UDim2.new(0.8,0,0,40)
+B4.BackgroundColor3 = Color3.fromRGB(100,30,30)
+B4.Font = Enum.Font.Gotham
+B4.Text = "❌ TUTUP"
+B4.TextColor3 = Color3.new(1,1,1)
+B4.TextSize = 14
+
+-- ✨ FUNGSI ATTACK SPEED PALING KENCANG ✨
+local SpeedSerang = false
+B1.MouseButton1Click:Connect(function()
+    SpeedSerang = not SpeedSerang
+    B1.BackgroundColor3 = SpeedSerang and Color3.fromRGB(240,80,160) or Color3.fromRGB(180,60,120)
+    
+    if SpeedSerang then
+        spawn(function()
+            while SpeedSerang do wait(0.01) -- ⚡ SERANG TIAP 0,01 DETIK!
+                pcall(function()
+                    -- Otomatis tekan tombol serang terus-menerus
+                    UIS:InputBegan:Fire({UserInputType = Enum.UserInputType.MouseButton1})
+                    
+                    -- Ubah cooldown senjata/jadi 0
+                    local Char = Player.Character
+                    if Char then
+                        for _,v in pairs(Char:GetDescendants()) do
+                            if v:IsA("NumberValue") and (v.Name:lower():find("cooldown") or v.Name:lower():find("delay")) then
+                                v.Value = 0
+                            end
+                        end
+                    end
+
+                    -- Ubah statistik kecepatan serang
+                    local leaderstats = Player:FindFirstChild("leaderstats") or Player:FindFirstChild("Stats")
+                    if leaderstats then
+                        if leaderstats:FindFirstChild("AttackSpeed") then leaderstats.AttackSpeed.Value = 99999 end
+                        if leaderstats:FindFirstChild("Kecepatan") then leaderstats.Kecepatan.Value = 99999 end
+                    end
+                end)
+            end
+        end)
+    end
+end)
+
+-- 🛡️ FUNGSI KEBAL
+B2.MouseButton1Click:Connect(function()
+    local Char = Player.Character or Player.CharacterAdded:Wait()
+    local Hum = Char:WaitForChild("Humanoid")
+    Hum.MaxHealth = math.huge
+    Hum.Health = math.huge
+    Hum.HealthChanged:Connect(function() Hum.Health = Hum.MaxHealth end)
+    B2.Text = "✅ SUDAH KEBAL"
+end)
+
+-- 🏃 FUNGSI LARI KENCANG
+B3.MouseButton1Click:Connect(function()
+    local Char = Player.Character or Player.CharacterAdded:Wait()
+    local Hum = Char:WaitForChild("Humanoid")
+    Hum.WalkSpeed = 250
+    Hum.JumpPower = 120
+    B3.Text = "✅ SUDAH KENCANG"
+end)
+
+-- ❌ TUTUP
+B4.MouseButton1Click:Connect(function() SG:Destroy() end)
+
+print("✅ RIKZ SCRIPT | ATTACK SPEED SIAP!")
