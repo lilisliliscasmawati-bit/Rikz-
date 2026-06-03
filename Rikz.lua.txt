@@ -1,7 +1,7 @@
 local Players = game:GetService("Players")
 local UIS = game:GetService("UserInputService")
 local Player = Players.LocalPlayer
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/08Azy/UI-Library/main/Library.lua"))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/PeiZ1337/UI-Library/main/Source.lua"))()
 
 local Window = Library:CreateWindow({
     Name = "RIKZ HUB",
@@ -11,8 +11,8 @@ local Window = Library:CreateWindow({
     Discord = {Enabled = false}
 })
 
-local Tab_Main = Window:CreateTab("Main", 123456)
-local Tab_Settings = Window:CreateTab("Settings", 654321)
+local Tab_Main = Window:CreateTab("Main", 4483333458)
+local Tab_Settings = Window:CreateTab("Settings", 626236365)
 
 local AutoX2 = false
 local Kebal = false
