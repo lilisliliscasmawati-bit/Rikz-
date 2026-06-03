@@ -1,0 +1,23 @@
+-- RIKZ SCRIPT | KEBAL DOANG --
+local Player = game:GetService("Players").LocalPlayer
+
+-- Fungsi Kebal Langsung Aktif
+local function JadiKebal()
+    local Karakter = Player.Character or Player.CharacterAdded:Wait()
+    local Humanoid = Karakter:WaitForChild("Humanoid")
+    
+    -- Darah jadi tak terhingga
+    Humanoid.MaxHealth = math.huge
+    Humanoid.Health = math.huge
+    
+    -- Pastikan darah gak pernah berkurang
+    Humanoid.HealthChanged:Connect(function()
+        if Humanoid.Health < Humanoid.MaxHealth then
+            Humanoid.Health = Humanoid.MaxHealth
+        end
+    end)
+end
+
+-- Jalanin pas karakter muncul
+Player.CharacterAdded:Connect(JadiKebal)
+JadiKebal()
