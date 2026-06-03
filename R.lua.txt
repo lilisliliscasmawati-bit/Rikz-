@@ -1,1 +1,27 @@
-loadstring (game:httpGethttps://raw.githubusercontent.com/lilisliliscasmawati-bit/Rikz-/refs/heads/main/R.lua.txt))()
+-- AUTO TRAIN
+local AutoTrain = false
+Tab:CreateToggle({
+    Name = "Auto Train",
+    CurrentValue = false,
+    Callback = function(Value)
+        AutoTrain = Value
+        if AutoTrain then
+            spawn(function()
+                while AutoTrain do
+                    wait(0.2)
+                    pcall(function()
+                        local train = Workspace:FindFirstChild("Training")
+                        if train and root then
+                            for _,v in pairs(train:GetDescendants()) do
+                                if v:IsA("Part") and v.Name == "TrainPart" then
+                                    root.CFrame = v.CFrame + Vector3.new(0,2,0)
+                                    remotes.Train:FireServer()
+                                end
+                            end
+                        end
+                    end)
+                end
+            end)
+        end
+    end
+})
