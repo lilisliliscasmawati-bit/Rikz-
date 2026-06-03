@@ -1,31 +1,22 @@
--- ⚡ RIKZ HUB | LARI BLOCK ⚡
 local Players = game:GetService("Players")
 local UIS = game:GetService("UserInputService")
 local Player = Players.LocalPlayer
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/08Azy/UI-Library/main/Library.lua"))()
 
--- ✅ GANTI LIBRARY DENGAN YANG PASTI JALAN
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/PeiZ1337/UI-Library/main/Source.lua"))()
-
--- ✅ BIKIN MENU (RAPI & BENAR)
 local Window = Library:CreateWindow({
     Name = "RIKZ HUB",
     LoadingTitle = "Lari Block",
     LoadingSubtitle = "Siap Dipakai",
-    ConfigurationSaving = { Enabled = true, FolderName = "RikzHub" },
-    Discord = { Enabled = false }
+    ConfigurationSaving = {Enabled = true, FolderName = "RikzHub"},
+    Discord = {Enabled = false}
 })
 
--- ✅ BIKIN TAB
-local Tab_Main = Window:CreateTab("Main", 4483333458)
-local Tab_Settings = Window:CreateTab("Settings", 626236365)
+local Tab_Main = Window:CreateTab("Main", 123456)
+local Tab_Settings = Window:CreateTab("Settings", 654321)
 
--- ✅ VARIABEL FITUR
 local AutoX2 = false
 local Kebal = false
 
--- ==================================================
--- ✅ FITUR AUTO X2
--- ==================================================
 spawn(function()
     while wait(0.03) do
         if AutoX2 then
@@ -49,9 +40,6 @@ spawn(function()
     end
 end)
 
--- ==================================================
--- ✅ FITUR KEBAL
--- ==================================================
 spawn(function()
     while wait(0.1) do
         if Kebal then
@@ -67,32 +55,29 @@ spawn(function()
     end
 end)
 
--- ==================================================
--- ✅ TOMBOL MENU
--- ==================================================
 Tab_Main:CreateToggle({
     Name = "🟣 Auto X2",
     CurrentValue = false,
-    Callback = function(Nilai)
-        AutoX2 = Nilai
-        Library:Notify("Auto X2", Nilai and "✅ Nyala" or "❌ Mati", 2)
+    Callback = function(v)
+        AutoX2=v
+        Library:Notify("Auto X2", v and "✅ Nyala" or "❌ Mati", 2)
     end
 })
 
 Tab_Main:CreateToggle({
     Name = "🛡️ Mode Kebal",
     CurrentValue = false,
-    Callback = function(Nilai)
-        Kebal = Nilai
-        Library:Notify("Mode Kebal", Nilai and "✅ Nyala" or "❌ Mati", 2)
+    Callback = function(v)
+        Kebal=v
+        Library:Notify("Mode Kebal", v and "✅ Nyala" or "❌ Mati", 2)
     end
 })
 
 Tab_Settings:CreateToggle({
     Name = "👻 Transparan",
     CurrentValue = false,
-    Callback = function(Nilai)
-        Window:SetTransparency(Nilai and 0.3 or 0)
+    Callback = function(v)
+        Window:SetTransparency(v and 0.3 or 0)
     end
 })
 
@@ -103,4 +88,4 @@ Tab_Settings:CreateButton({
     end
 })
 
-print("✅ SCRIPT BERHASIL DIMUAT!")
+print("✅ SCRIPT BERHASIL!")
