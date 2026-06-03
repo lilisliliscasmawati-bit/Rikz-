@@ -1,0 +1,129 @@
+-- RIKZ HUB | NAPOLEON SIMPEL --
+-- TOMBOL BERFUNGSI 100% --
+
+local Player = game:GetService("Players").LocalPlayer
+local UIS = game:GetService("UserInputService")
+local CoreGui = game:GetService("CoreGui")
+
+-- // TAMPILAN MENU SIMPEL //
+local SG = Instance.new("ScreenGui", CoreGui)
+SG.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+SG.IgnoreGuiInset = true
+
+local Main = Instance.new("Frame", SG)
+Main.BackgroundColor3 = Color3.fromRGB(15,15,15)
+Main.Position = UDim2.new(0.05,0,0.05,0)
+Main.Size = UDim2.new(0,260,0,220)
+Main.Active = true
+Main.Draggable = true
+
+-- Garis Samping Biru
+local Garis = Instance.new("Frame", Main)
+Garis.BackgroundColor3 = Color3.fromRGB(70, 120, 255)
+Garis.Size = UDim2.new(0,4,1,0)
+Garis.Position = UDim2.new(0,0,0,0)
+
+-- Judul
+local Judul = Instance.new("TextLabel", Main)
+Judul.BackgroundTransparency = 1
+Judul.Position = UDim2.new(0.08,0,0.05,0)
+Judul.Size = UDim2.new(0.8,0,0,30)
+Judul.Font = Enum.Font.GothamBold
+Judul.Text = "⚡ RIKZ HUB"
+Judul.TextColor3 = Color3.new(1,1,1)
+Judul.TextSize = 14
+Judul.TextXAlignment = Enum.TextXAlignment.Left
+
+-- // FUNGSI BIKIN TOMBOL (SIMPEL & BERFUNGSI) //
+local function Tombol(Nama, Y)
+    local Btn = Instance.new("TextButton", Main)
+    Btn.BackgroundColor3 = Color3.fromRGB(22,22,22)
+    Btn.Position = UDim2.new(0.1,0,Y,0)
+    Btn.Size = UDim2.new(0.8,0,0,45)
+    Btn.Font = Enum.Font.GothamSemibold
+    Btn.Text = Nama
+    Btn.TextColor3 = Color3.fromRGB(170,170,170)
+    Btn.TextSize = 13
+    Btn.AutoButtonColor = false
+
+    -- Garis Nyala Pas Diklik
+    local Aktif = false
+    local GarisKecil = Instance.new("Frame", Btn)
+    GarisKecil.BackgroundColor3 = Color3.fromRGB(70, 120, 255)
+    GarisKecil.Position = UDim2.new(0,0,0.15,0)
+    GarisKecil.Size = UDim2.new(0,3,0.7,0)
+    GarisKecil.Visible = false
+
+    Btn.MouseButton1Click:Connect(function()
+        Aktif = not Aktif
+        GarisKecil.Visible = Aktif
+        Btn.TextColor3 = Aktif and Color3.new(1,1,1) or Color3.fromRGB(170,170,170)
+        Btn.BackgroundColor3 = Aktif and Color3.fromRGB(30,30,30) or Color3.fromRGB(22,22,22)
+    end)
+
+    return Btn
+end
+
+-- // BIKIN TOMBOL //
+local B1 = Tombol("🤖 AUTO KLIK x2", 0.22)
+local B2 = Tombol("🛡️ KEBAL MODE", 0.52)
+
+-- // FITUR 1: AUTO x2 //
+local AutoX2 = false
+B1.MouseButton1Click:Connect(function()
+    AutoX2 = not AutoX2
+    if AutoX2 then
+        spawn(function()
+            while AutoX2 do wait(0.05)
+                pcall(function()
+                    -- Klik tombol di layar
+                    for _,v in pairs(Player.PlayerGui:GetDescendants()) do
+                        if (v:IsA("ImageButton") or v:IsA("TextButton")) and v.Visible then
+                            if v.Name:lower():find("x2") or v.Name:lower():find("multi") or v.Name:lower():find("hand") or v.Name:lower():find("bonus") then
+                                fireclickdetector(v)
+                            end
+                        end
+                    end
+                    -- Klik tombol di dunia
+                    for _,v in pairs(workspace:GetDescendants()) do
+                        if v:IsA("Part") and v:FindFirstChild("ClickDetector") then
+                            if v.Name:lower():find("x2") or v.Name:lower():find("pop") then
+                                fireclickdetector(v.ClickDetector)
+                            end
+                        end
+                    end
+                end)
+            end
+        end)
+    end
+end)
+
+-- // FITUR 2: KEBAL //
+local Kebal = false
+B2.MouseButton1Click:Connect(function()
+    Kebal = not Kebal
+    if Kebal then
+        spawn(function()
+            while Kebal do wait()
+                pcall(function()
+                    local Char = Player.Character or Player.CharacterAdded:Wait()
+                    local Hum = Char:FindFirstChildWhichIsA("Humanoid")
+                    if Hum then
+                        Hum.MaxHealth = math.huge
+                        Hum.Health = math.huge
+                    end
+                end)
+            end
+        end)
+    end
+end)
+
+-- // TOMBOL TUTUP //
+local Tutup = Instance.new("TextButton", Main)
+Tutup.Text = "X"
+Tutup.Font = Enum.Font.GothamBold
+Tutup.TextColor3 = Color3.new(1,0.2,0.2)
+Tutup.BackgroundTransparency = 1
+Tutup.Position = UDim2.new(0.88,0,0.05,0)
+Tutup.Size = UDim2.new(0,20,0,20)
+Tutup.MouseButton1Click:Connect(function() SG:Destroy() end)
