@@ -1,127 +1,69 @@
--- RIKZ HUB | NAPOLEON SIMPEL --
--- AUTO x2 CARA PALING AMPUH --
+-- RIKZ HUB | MENU TORA STYLE + FITUR LENGKAP --
+-- AUTO x2 KE MANAPUN PINDAH + KEBAL --
 
-local Player = game:GetService("Players").LocalPlayer
-local CoreGui = game:GetService("CoreGui")
-local Mouse = game:GetService("Players").LocalPlayer:GetMouse()
-local UIS = game:GetService("UserInputService")
+-- 🔹 MUAT TAMPILAN MENU TORA ASLI 🔹
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ToraIsMe/ToraIsMe/main/UiLib"))()
+local Window = Library:CreateWindow("⚡ RIKZ HUB ⚡", 520, 400)
 
--- // TAMPILAN MENU SIMPEL //
-local SG = Instance.new("ScreenGui", CoreGui)
-SG.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-SG.IgnoreGuiInset = true
+-- 🔹 BAGIAN MENU 🔹
+local MainTab = Window:CreateTab("🏠 UTAMA")
+local FarmTab = Window:CreateTab("🤖 OTOMATIS")
+local LainTab = Window:CreateTab("🛡️ LAINNYA")
 
-local Main = Instance.new("Frame", SG)
-Main.BackgroundColor3 = Color3.fromRGB(15,15,15)
-Main.Position = UDim2.new(0.05,0,0.05,0)
-Main.Size = UDim2.new(0,260,0,220)
-Main.Active = true
-Main.Draggable = true
+-- 🔹 VARIABEL PENGATURAN 🔹
+getgenv().AutoX2 = false
+getgenv().Kebal = false
 
--- Garis Samping Biru
-local Garis = Instance.new("Frame", Main)
-Garis.BackgroundColor3 = Color3.fromRGB(70, 120, 255)
-Garis.Size = UDim2.new(0,4,1,0)
-Garis.Position = UDim2.new(0,0,0,0)
+-- ============== FITUR 1: AUTO KLIK x2 ==============
+FarmTab:CreateToggle("🤖 AUTO KLIK x2 (KE MANAPUN PINDAH)", function(state)
+    AutoX2 = state
+    if state then
+        spawn(function()
+            while AutoX2 do wait(0.01)
+                pcall(function()
+                    -- 🎯 CARA AMPUH: KLIK TENGAH LAYAR + CARI GAMBAR
+                    local UIS = game:GetService("UserInputService")
+                    -- Klik titik tengah pas tempat tombol ungu
+                    UIS:InputBegan:Fire({UserInputType = Enum.UserInputType.MouseButton1, Position = Vector2.new(640, 360)})
+                    UIS:InputEnded:Fire({UserInputType = Enum.UserInputType.MouseButton1, Position = Vector2.new(640, 360)})
 
--- Judul
-local Judul = Instance.new("TextLabel", Main)
-Judul.BackgroundTransparency = 1
-Judul.Position = UDim2.new(0.08,0,0.05,0)
-Judul.Size = UDim2.new(0.8,0,0,30)
-Judul.Font = Enum.Font.GothamBold
-Judul.Text = "⚡ RIKZ HUB"
-Judul.TextColor3 = Color3.new(1,1,1)
-Judul.TextSize = 14
-Judul.TextXAlignment = Enum.TextXAlignment.Left
-
--- // FUNGSI BIKIN TOMBOL //
-local function Tombol(Nama, Y)
-    local Btn = Instance.new("TextButton", Main)
-    Btn.BackgroundColor3 = Color3.fromRGB(22,22,22)
-    Btn.Position = UDim2.new(0.1,0,Y,0)
-    Btn.Size = UDim2.new(0.8,0,0,45)
-    Btn.Font = Enum.Font.GothamSemibold
-    Btn.Text = Nama
-    Btn.TextColor3 = Color3.fromRGB(170,170,170)
-    Btn.TextSize = 13
-    Btn.AutoButtonColor = false
-
-    local GarisKecil = Instance.new("Frame", Btn)
-    GarisKecil.BackgroundColor3 = Color3.fromRGB(70, 120, 255)
-    GarisKecil.Position = UDim2.new(0,0,0.15,0)
-    GarisKecil.Size = UDim2.new(0,3,0.7,0)
-    GarisKecil.Visible = false
-
-    local Aktif = false
-    Btn.MouseButton1Click:Connect(function()
-        Aktif = not Aktif
-        GarisKecil.Visible = Aktif
-        Btn.TextColor3 = Aktif and Color3.new(1,1,1) or Color3.fromRGB(170,170,170)
-        Btn.BackgroundColor3 = Aktif and Color3.fromRGB(30,30,30) or Color3.fromRGB(22,22,22)
-    end)
-
-    return {Btn = Btn, Aktif = function() return Aktif end}
-end
-
--- // BIKIN TOMBOL FITUR //
-local B1 = Tombol("🤖 AUTO KLIK x2", 0.22)
-local B2 = Tombol("🛡️ KEBAL MODE", 0.52)
-
--- // FITUR 1: AUTO x2 - CARA TERAMPUH (KLIK TENGAH LAYAR LANGSUNG) //
-spawn(function()
-    while wait(0.01) do -- Klik sangat cepat
-        if B1.Aktif() then
-            pcall(function()
-                -- 🔹 CARA 1: KLIK LANGSUNG DI POSISI TENGAH LAYAR 🔹
-                -- Koordinat ini pas banget di tempat tombol ungu kamu muncul
-                UIS:InputBegan:Fire({UserInputType = Enum.UserInputType.MouseButton1, Position = Vector2.new(640, 360)})
-                UIS:InputEnded:Fire({UserInputType = Enum.UserInputType.MouseButton1, Position = Vector2.new(640, 360)})
-
-                -- 🔹 CARA 2: CARI BERDASARKAN GAMBAR TANGANNYA 🔹
-                for _, gui in pairs(Player.PlayerGui:GetDescendants()) do
-                    if gui:IsA("ImageButton") and gui.Visible then
-                        -- Cari gambar tangan ungu / gambar x2
-                        if gui.Image == "rbxassetid://14835872345" or string.find(gui.Image:lower(), "hand") or string.find(gui.Image:lower(), "click") or string.find(gui.Name:lower(), "x2") then
-                            fireclickdetector(gui)
-                        end
-                        -- Cari ukuran besar
-                        if gui.AbsoluteSize.X > 100 and gui.AbsoluteSize.Y > 100 then
-                            fireclickdetector(gui)
+                    -- 🔍 CARI BERDASARKAN GAMBAR & UKURAN
+                    for _, gui in pairs(game.Players.LocalPlayer.PlayerGui:GetDescendants()) do
+                        if gui:IsA("ImageButton") and gui.Visible then
+                            if gui.AbsoluteSize.X > 80 and gui.AbsoluteSize.Y > 80 then
+                                if string.find(gui.Name:lower(), "x2") or string.find(gui.Image:lower(), "hand") or string.find(gui.Image:lower(), "multi") then
+                                    fireclickdetector(gui)
+                                end
+                            end
                         end
                     end
-                end
-            end)
-        end
+                end)
+            end
+        end)
     end
 end)
 
--- // FITUR 2: KEBAL //
-spawn(function()
-    while wait() do
-        if B2.Aktif() then
-            pcall(function()
-                local Char = Player.Character or Player.CharacterAdded:Wait()
-                local Hum = Char:FindFirstChildWhichIsA("Humanoid")
-                if Hum and Hum.Health then
+-- ============== FITUR 2: KEBAL / GOD MODE ==============
+LainTab:CreateToggle("🛡️ KEBAL MODE (DARAH TAK TERHENTI)", function(state)
+    Kebal = state
+    if state then
+        spawn(function()
+            while Kebal do wait()
+                pcall(function()
+                    local Char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+                    local Hum = Char:WaitForChild("Humanoid")
                     Hum.MaxHealth = math.huge
                     Hum.Health = math.huge
-                    -- Jaga-jaga kalau berubah nama
-                    Hum.HealthChanged:Connect(function()
-                        Hum.Health = Hum.MaxHealth
-                    end)
-                end
-            end)
-        end
+                    Hum.HealthChanged:Connect(function() Hum.Health = math.huge end)
+                end)
+            end
+        end)
     end
 end)
 
--- // TOMBOL TUTUP //
-local Tutup = Instance.new("TextButton", Main)
-Tutup.Text = "X"
-Tutup.Font = Enum.Font.GothamBold
-Tutup.TextColor3 = Color3.new(1,0.2,0.2)
-Tutup.BackgroundTransparency = 1
-Tutup.Position = UDim2.new(0.88,0,0.05,0)
-Tutup.Size = UDim2.new(0,20,0,20)
-Tutup.MouseButton1Click:Connect(function() SG:Destroy() end)
+-- ============== INFORMASI ==============
+MainTab:CreateLabel("✅ Script Berhasil Dimuat!")
+MainTab:CreateLabel("💡 Fitur sudah disesuaikan dengan game kamu")
+
+-- 🔔 NOTIFIKASI
+Library:Notify("🔥 RIKZ HUB SIAP PAKAI!", "TORA STYLE", 3)
