@@ -19,10 +19,6 @@ local Tab_Brainrot = Window:MakeTab({
     Name = "Daftar Brainrot",
     Icon = "rbxassetid://603125843"
 })
-local Tab_Settings = Window:MakeTab({
-    Name = "Pengaturan",
-    Icon = "rbxassetid://626236365"
-})
 Tab_Main:AddToggle({
     Name = "🟣 Auto X2 Ungu",
     Default = false,
@@ -42,14 +38,5 @@ Tab_Main:AddToggle({
     Name = "💎 Ambil Brainrot Termahal",
     Default = false,
     Callback = function() end
-})
-Tab_Settings:AddToggle({
-    Name = "👻 Menu Transparan",
-    Default = false,
-    Callback = function(v) Window:SetTransparency(v and 0.3 or 0) end
-})
-Tab_Settings:AddButton({
-    Name = "❌ Tutup Menu",
-    Callback = function() OrionLib:Destroy() end
 })
 OrionLib:Init()
