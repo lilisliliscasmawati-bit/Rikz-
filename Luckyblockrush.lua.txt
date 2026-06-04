@@ -30,7 +30,7 @@ Tab_Main:AddToggle({
     Callback = function(nyala)
    if nyala then
       _G.KebalAktif = true
-      OrionLib:MakeNotification({Name="✅ AKTIF", Content="Mode Kebal: Gak Bisa Mati!", Time=2})
+      OrionLib:MakeNotification({Name="AKTIF", Content="Mode Kebal: Gak Bisa Mati!", Time=2})
     spawn(function()
       while _G.KebalAktif and task.wait() do
         local Player = game.Players.LocalPlayer
@@ -42,7 +42,7 @@ Tab_Main:AddToggle({
       end)
  else
      _G.KebalAktif = false
-     OrionLib:MakeNotification({Name="❌ MATI", Content="Mode Kebal Dimatikan!", Time=2})
+     OrionLib:MakeNotification({Name="MATI", Content="Mode Kebal Dimatikan!", Time=2})
   end
 })
 Tab_Main:AddToggle({
