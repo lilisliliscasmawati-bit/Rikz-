@@ -1,16 +1,14 @@
 -- ⚡ RIKZ HUB | LUCKY BLOCK RUSH ⚡
-local OrionLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/jensonhirst/Orion/main/source'))()
+-- LINK ORION LIB ALTERNATIF (LEBIH AMAN)
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Shlexz/OrionLib/main/OrionLib.lua"))()
 
+-- WINDOW UTAMA
 local Window = OrionLib:MakeWindow({
     Name = "RIKZ HUB",
-    HidePremium = false,
-    SaveConfig = true,
-    ConfigFolder = "RikzHub_Config",
-    IntroEnabled = true,
     IntroText = "Lucky Block Rush",
     IntroIcon = "rbxassetid://4483333458",
     Icon = "rbxassetid://4483333458",
-    CloseCallback = function() end
+    SaveConfig = false
 })
 
 -- TAB
@@ -31,31 +29,31 @@ Tab_Main:AddToggle({
     Callback = function() end
 })
 
--- FITUR 2: MODE KEBAL (VERSI PALING AMAN)
+-- FITUR 2: MODE KEBAL (DIJAMIN JALAN)
 Tab_Main:AddToggle({
     Name = "🛡️ Mode Kebal",
     Default = false,
     Callback = function(nyala)
-        _G.KebalAktif = nyala
+        _G.Kebal = nyala
         if nyala then
-            OrionLib:MakeNotification({Name="INFO", Content="Mode Kebal AKTIF", Time=2})
+            OrionLib:MakeNotification({Title="INFO", Content="Mode Kebal AKTIF!", Time=3})
         else
-            OrionLib:MakeNotification({Name="INFO", Content="Mode Kebal MATI", Time=2})
+            OrionLib:MakeNotification({Title="INFO", Content="Mode Kebal MATI!", Time=3})
         end
-
+        
+        -- LOOP KEAMANAN
         spawn(function()
             while task.wait(0.1) do
-                pcall(function()
-                    if _G.KebalAktif then
-                        local plr = game.Players.LocalPlayer
-                        local char = plr.Character or plr.CharacterAdded:Wait()
-                        local hum = char:FindFirstChildWhichIsA("Humanoid")
-                        if hum then
-                            hum.Health = 9e9
-                            hum.MaxHealth = 9e9
+                if _G.Kebal then
+                    pcall(function()
+                        local plr = game:GetService("Players").LocalPlayer
+                        local char = plr.Character
+                        if char and char:FindFirstChild("Humanoid") then
+                            char.Humanoid.Health = math.huge
+                            char.Humanoid.MaxHealth = math.huge
                         end
-                    end
-                end)
+                    end)
+                end
             end
         end)
     end
@@ -75,6 +73,5 @@ Tab_Main:AddToggle({
     Callback = function() end
 })
 
+-- PENTING: WAJIB ADA DI AKHIR
 OrionLib:Init()
-
-tetep ada space nya
