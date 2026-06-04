@@ -1,46 +1,49 @@
--- ⚡ RIKZ HUB | LUCKY BLOCK RUSH ⚡
--- LINK ORION LIB ALTERNATIF (LEBIH AMAN)
-local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Shlexz/OrionLib/main/OrionLib.lua"))()
+-- ⚡ RIKZ HUB | DASAR MENU ⚡
+local OrionLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/jensonhirst/Orion/main/source'))()
 
--- WINDOW UTAMA
+-- BAGIAN WINDOW (DIUBAH SESUAI MAU KAMU)
 local Window = OrionLib:MakeWindow({
-    Name = "RIKZ HUB",
-    IntroText = "Lucky Block Rush",
-    IntroIcon = "rbxassetid://4483333458",
-    Icon = "rbxassetid://4483333458",
-    SaveConfig = false
+    Name = "RIKZ HUB", -- Nama menu
+    HidePremium = false,
+    SaveConfig = true,
+    ConfigFolder = "Rikz_Config", -- Nama folder simpan pengaturan
+    IntroEnabled = true, -- Tampilkan animasi awal
+    IntroText = "Lucky Block Rush", -- Tulisan saat animasi
+    IntroIcon = "rbxassetid://4483333458", -- Gambar animasi
+    Icon = "rbxassetid://4483333458", -- Gambar di judul menu
+    CloseCallback = function() end -- Kerjaan kalau menu ditutup
 })
--- TAB
-local Tab_Main = Window:MakeTab({
+-- BIKIN TAB / HALAMAN
+local Tab_Utama = Window:MakeTab({
     Name = "Fitur Utama",
     Icon = "rbxassetid://4483333458"
 })
-local Tab_Brainrot = Window:MakeTab({
-    Name = "Daftar Brainrot",
-    Icon = "rbxassetid://603125843"
-})
--- FITUR 1
-Tab_Main:AddToggle({
-    Name = "🟣 Auto X2 Ungu",
-    Default = false,
-    Callback = function() end
-})
--- FITUR 2: MODE KEBAL (DIJAMIN JALAN)
-Tab_Main:AddToggle({
+-- CONTOH TOMBOL KEBAL (LENGKAP & BERFUNGSI)
+Tab_Utama:AddToggle({
     Name = "🛡️ Mode Kebal",
     Default = false,
     Callback = function(nyala)
--- FITUR 3
-Tab_Main:AddToggle({
-    Name = "📥 Auto Claim X2",
-    Default = false,
-    Callback = function() end
+        _G.KebalAktif = nyala
+        if nyala then
+            OrionLib:MakeNotification({Name="AKTIF", Content="Kamu Kebal / Gak Bisa Mati!", Time=2})
+            spawn(function()
+                while _G.KebalAktif and task.wait(0.1) do
+                    pcall(function()
+                        local Plr = game.Players.LocalPlayer
+                        local Char = Plr.Character or Plr.CharacterAdded:Wait()
+                        local Hum = Char:FindFirstChildWhichIsA("Humanoid")
+                        if Hum then
+                            Hum.Health = math.huge
+                            Hum.MaxHealth = math.huge
+                        end
+                    end)
+                end
+            end)
+        else
+            _G.KebalAktif = false
+            OrionLib:MakeNotification({Name="MATI", Content="Kebal Dimatikan", Time=2})
+        end
+    end
 })
--- FITUR 4
-Tab_Main:AddToggle({
-    Name = "💎 Ambil Brainrot Termahal",
-    Default = false,
-    Callback = function() end
-})
--- PENTING: WAJIB ADA DI AKHIR
+-- WAJIB DI BAWAH BIAR MENU MUNCUL
 OrionLib:Init()
