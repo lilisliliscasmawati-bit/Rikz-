@@ -10,68 +10,37 @@ local Window = OrionLib:MakeWindow({
     Icon = "rbxassetid://4483333458",
     SaveConfig = false
 })
-
 -- TAB
 local Tab_Main = Window:MakeTab({
     Name = "Fitur Utama",
     Icon = "rbxassetid://4483333458"
 })
-
 local Tab_Brainrot = Window:MakeTab({
     Name = "Daftar Brainrot",
     Icon = "rbxassetid://603125843"
 })
-
 -- FITUR 1
 Tab_Main:AddToggle({
     Name = "🟣 Auto X2 Ungu",
     Default = false,
     Callback = function() end
 })
-
 -- FITUR 2: MODE KEBAL (DIJAMIN JALAN)
 Tab_Main:AddToggle({
     Name = "🛡️ Mode Kebal",
     Default = false,
     Callback = function(nyala)
-        _G.Kebal = nyala
-        if nyala then
-            OrionLib:MakeNotification({Title="INFO", Content="Mode Kebal AKTIF!", Time=3})
-        else
-            OrionLib:MakeNotification({Title="INFO", Content="Mode Kebal MATI!", Time=3})
-        end
-        
-        -- LOOP KEAMANAN
-        spawn(function()
-            while task.wait(0.1) do
-                if _G.Kebal then
-                    pcall(function()
-                        local plr = game:GetService("Players").LocalPlayer
-                        local char = plr.Character
-                        if char and char:FindFirstChild("Humanoid") then
-                            char.Humanoid.Health = math.huge
-                            char.Humanoid.MaxHealth = math.huge
-                        end
-                    end)
-                end
-            end
-        end)
-    end
-})
-
 -- FITUR 3
 Tab_Main:AddToggle({
     Name = "📥 Auto Claim X2",
     Default = false,
     Callback = function() end
 })
-
 -- FITUR 4
 Tab_Main:AddToggle({
     Name = "💎 Ambil Brainrot Termahal",
     Default = false,
     Callback = function() end
 })
-
 -- PENTING: WAJIB ADA DI AKHIR
 OrionLib:Init()
