@@ -13,11 +13,13 @@ local Window = OrionLib:MakeWindow({
     Icon = "rbxassetid://4483333458", -- Gambar di judul menu
     CloseCallback = function() end -- Kerjaan kalau menu ditutup
 })
+
 -- BIKIN TAB / HALAMAN
 local Tab_Utama = Window:MakeTab({
     Name = "Fitur Utama",
     Icon = "rbxassetid://4483333458"
 })
+
 -- CONTOH TOMBOL KEBAL (LENGKAP & BERFUNGSI)
 Tab_Utama:AddToggle({
     Name = "🛡️ Mode Kebal",
@@ -45,5 +47,6 @@ Tab_Utama:AddToggle({
         end
     end
 })
+
 -- WAJIB DI BAWAH BIAR MENU MUNCUL
 OrionLib:Init()
