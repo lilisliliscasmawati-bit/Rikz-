@@ -1,0 +1,217 @@
+-- ⚡ RIKZ HUB | BRAINROT LIST EDITION ⚡
+-- ✅ MENU KEREN ✅ DAFTAR LENGKAP ✅ FITUR OTOMATIS
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local UIS = game:GetService("UserInputService")
+local Player = Players.LocalPlayer
+
+-- ✅ PANGGIL LIBRARY ORION (TAMPILAN KEREN)
+local OrionLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/jensonhirst/Orion/main/source'))()
+
+-- ✅ DAFTAR BRAINROT DARI FOTO KAMU (URUT DARI TERMAHAL)
+local brainrotList = {
+    {n=1, rarity="Eternal", name="kingFalken", variant="astral", reward=375000000000},
+    {n=2, rarity="Eternal", name="kingFalken", variant="honey", reward=325000000000},
+    {n=3, rarity="Eternal", name="kingFalken", variant="blazing", reward=300000000000},
+    {n=4, rarity="Eternal", name="lordoRobo", variant="astral", reward=260000000000},
+    {n=5, rarity="Eternal", name="kingFalken", variant="poison", reward=250000000000},
+    {n=6, rarity="Eternal", name="kingFalken", variant="normal", reward=250000000000},
+    {n=7, rarity="Eternal", name="lordoRobo", variant="honey", reward=227500000000},
+    {n=8, rarity="Eternal", name="rengRongo", variant="astral", reward=200000000000},
+    {n=9, rarity="Eternal", name="kingFalken", variant="gold", reward=375000000000},
+    {n=10, rarity="Eternal", name="kingFalken", variant="diamond", reward=318750000000},
+    {n=11, rarity="Eternal", name="lordoRobo", variant="blazing", reward=195000000000},
+    {n=12, rarity="Eternal", name="rengRongo", variant="honey", reward=175000000000},
+    {n=13, rarity="Eternal", name="pineaplino", variant="astral", reward=320000000000},
+    {n=14, rarity="Eternal", name="vulture", variant="astral", reward=300000000000},
+    {n=15, rarity="Eternal", name="lordoRobo", variant="poison", reward=195000000000},
+    {n=16, rarity="Eternal", name="rengRongo", variant="blazing", reward=160000000000}
+}
+
+-- ✅ BIKIN JENDELA MENU
+local Window = OrionLib:MakeWindow({
+    Name = "RIKZ HUB",
+    HidePremium = false,
+    SaveConfig = true,
+    ConfigFolder = "RikzHub",
+    IntroText = "Brainrot List | Lari Block",
+    Icon = "rbxassetid://4483333458"
+})
+
+-- ✅ BIKIN TAB / KATEGORI
+local Tab_Main = Window:MakeTab({
+    Name = "Utama",
+    Icon = "rbxassetid://4483333458"
+})
+
+local Tab_Brainrot = Window:MakeTab({
+    Name = "Brainrot",
+    Icon = "rbxassetid://603125843"
+})
+
+local Tab_Settings = Window:MakeTab({
+    Name = "Pengaturan",
+    Icon = "rbxassetid://626236365"
+})
+
+-- ✅ VARIABEL FITUR
+local AutoX2 = false
+local Kebal = false
+local AutoClaim = false
+local AmbilPalingMahal = false
+
+-- ==================================================
+-- 📌 FITUR 1: AUTO X2 UNGU
+-- ==================================================
+spawn(function()
+    while wait(0.03) do
+        if AutoX2 then
+            pcall(function()
+                for _,v in pairs(Player.PlayerGui:GetDescendants()) do
+                    if (v:IsA("ImageButton") or v:IsA("TextButton")) and v.Visible then
+                        if string.find(string.lower(v.Name), "x2") 
+                        or string.find(string.lower(tostring(v.Text)), "x2")
+                        or v.ImageColor3 == Color3.fromRGB(170, 0, 255) 
+                        or v.BackgroundColor3 == Color3.fromRGB(170, 0, 255) then
+                            
+                            fireclickdetector(v)
+                            v.MouseButton1Down:Fire() wait(0.01)
+                            v.MouseButton1Up:Fire()
+                            UIS:Tap(v.AbsolutePosition + v.AbsoluteSize/2)
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+-- ==================================================
+-- 📌 FITUR 2: MODE KEBAL
+-- ==================================================
+spawn(function()
+    while wait(0.1) do
+        if Kebal then
+            pcall(function()
+                local Character = Player.Character or Player.CharacterAdded:Wait()
+                local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+                if Humanoid then
+                    Humanoid.Health = Humanoid.MaxHealth
+                    Humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
+                end
+            end)
+        end
+    end
+end)
+
+-- ==================================================
+-- 📌 FITUR 3: AUTO CLAIM / KLAIM X2 (DARI KODE KAMU)
+-- ==================================================
+spawn(function()
+    while wait(0.5) do
+        if AutoClaim then
+            pcall(function()
+                if ReplicatedStorage:FindFirstChild("RemoteEvent") then
+                    ReplicatedStorage.RemoteEvent:FireServer("ClaimX2")
+                    OrionLib:MakeNotification({Name="Auto Claim", Content="✅ X2 Diklaim!", Time=1})
+                end
+            end)
+        end
+    end
+end)
+
+-- ==================================================
+-- 📌 FITUR 4: AMBIL BRAINROT TERMAHAL
+-- ==================================================
+spawn(function()
+    while wait(1) do
+        if AmbilPalingMahal then
+            pcall(function()
+                -- Ambil data paling atas = paling mahal
+                local Terbaik = brainrotList[1]
+                OrionLib:MakeNotification({
+                    Name="Brainrot Terbaik",
+                    Content="✨ "..Terbaik.name.." | "..Terbaik.variant.." | Rp."..Terbaik.reward,
+                    Time=3
+                })
+                -- KIRIM KE SERVER (sesuaikan nama RemoteEvent di gamemu)
+                if ReplicatedStorage:FindFirstChild("RemoteEvent") then
+                    ReplicatedStorage.RemoteEvent:FireServer("AmbilBrainrot", Terbaik.name, Terbaik.variant)
+                end
+            end)
+        end
+    end
+end)
+
+-- ==================================================
+-- 🎛️ TOMBOL MENU - BAGIAN UTAMA
+-- ==================================================
+Tab_Main:AddToggle({
+    Name = "🟣 Auto X2 Ungu",
+    Default = false,
+    Callback = function(v)
+        AutoX2 = v
+        OrionLib:MakeNotification({Name="Auto X2", Content=v and "✅ Nyala | Pencet Terus" or "❌ Mati", Time=2})
+    end
+})
+
+Tab_Main:AddToggle({
+    Name = "🛡️ Mode Kebal / Anti Mati",
+    Default = false,
+    Callback = function(v)
+        Kebal = v
+        OrionLib:MakeNotification({Name="Mode Kebal", Content=v and "✅ Gak Bisa Mati" or "❌ Mati", Time=2})
+    end
+})
+
+Tab_Main:AddToggle({
+    Name = "📥 Auto Claim X2",
+    Default = false,
+    Callback = function(v)
+        AutoClaim = v
+        OrionLib:MakeNotification({Name="Auto Claim", Content=v and "✅ Otomatis Klaim" or "❌ Mati", Time=2})
+    end
+})
+
+-- ==================================================
+-- 🎛️ TOMBOL MENU - BAGIAN BRAINROT
+-- ==================================================
+Tab_Brainrot:AddToggle({
+    Name = "💎 Ambil Paling Mahal",
+    Default = false,
+    Callback = function(v)
+        AmbilPalingMahal = v
+        OrionLib:MakeNotification({Name="Brainrot", Content=v and "✅ Cari Termahal" or "❌ Berhenti", Time=2})
+    end
+})
+
+-- Tampilkan daftar singkat
+for i = 1, 5 do -- Tampilkan 5 teratas saja
+    local data = brainrotList[i]
+    Tab_Brainrot:AddLabel({
+        Name = i..". "..data.name.." ["..data.variant.."] - Rp."..data.reward
+    })
+end
+
+-- ==================================================
+-- 🎛️ TOMBOL MENU - BAGIAN PENGATURAN
+-- ==================================================
+Tab_Settings:AddToggle({
+    Name = "👻 Menu Transparan",
+    Default = false,
+    Callback = function(v)
+        Window:SetTransparency(v and 0.3 or 0)
+    end
+})
+
+Tab_Settings:AddButton({
+    Name = "❌ Tutup Menu",
+    Callback = function()
+        OrionLib:Destroy()
+    end
+})
+
+-- ✅ JALANKAN MENU
+OrionLib:Init()
+
+print("✅ RIKZ HUB | BRAINROT EDITION BERHASIL DIMUAT!")
