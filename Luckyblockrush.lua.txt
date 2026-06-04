@@ -1,5 +1,5 @@
+-- ⚡ RIKZ HUB | LUCKY BLOCK RUSH ⚡
 local OrionLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/jensonhirst/Orion/main/source'))()
-
 local Window = OrionLib:MakeWindow({
     Name = "RIKZ HUB",
     HidePremium = false,
@@ -9,53 +9,47 @@ local Window = OrionLib:MakeWindow({
     IntroText = "Lucky Block Rush",
     IntroIcon = "rbxassetid://4483333458",
     Icon = "rbxassetid://4483333458",
-    CloseCallback = function() print("Menu Ditutup") end
+    CloseCallback = function() end
 })
-
--- Bikin Tab / Kategori
 local Tab_Main = Window:MakeTab({
     Name = "Fitur Utama",
     Icon = "rbxassetid://4483333458"
 })
-
 local Tab_Brainrot = Window:MakeTab({
     Name = "Daftar Brainrot",
     Icon = "rbxassetid://603125843"
 })
-
 local Tab_Settings = Window:MakeTab({
     Name = "Pengaturan",
     Icon = "rbxassetid://626236365"
 })
-
--- Variabel Fitur
-local AutoX2 = false
-local Kebal = false
-
--- Contoh Tombol
 Tab_Main:AddToggle({
     Name = "🟣 Auto X2 Ungu",
     Default = false,
-    Callback = function(v)
-        AutoX2 = v
-        OrionLib:MakeNotification({Name="Auto X2", Content=v and "✅ Nyala" or "❌ Mati", Time=2})
-    end
+    Callback = function() end
 })
-
 Tab_Main:AddToggle({
     Name = "🛡️ Mode Kebal",
     Default = false,
-    Callback = function(v)
-        Kebal = v
-        OrionLib:MakeNotification({Name="Mode Kebal", Content=v and "✅ Nyala" or "❌ Mati", Time=2})
-    end
+    Callback = function() end
 })
-
+Tab_Main:AddToggle({
+    Name = "📥 Auto Claim X2",
+    Default = false,
+    Callback = function() end
+})
+Tab_Main:AddToggle({
+    Name = "💎 Ambil Brainrot Termahal",
+    Default = false,
+    Callback = function() end
+})
+Tab_Settings:AddToggle({
+    Name = "👻 Menu Transparan",
+    Default = false,
+    Callback = function(v) Window:SetTransparency(v and 0.3 or 0) end
+})
 Tab_Settings:AddButton({
     Name = "❌ Tutup Menu",
-    Callback = function()
-        OrionLib:Destroy()
-    end
+    Callback = function() OrionLib:Destroy() end
 })
-
 OrionLib:Init()
