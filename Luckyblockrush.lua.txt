@@ -1,5 +1,6 @@
--- ⚡ RIKZ HUB | LUCKY BLOCK RUSH ⚡ 
+-- ⚡ RIKZ HUB | LUCKY BLOCK RUSH ⚡
 local OrionLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/jensonhirst/Orion/main/source'))()
+
 local Window = OrionLib:MakeWindow({
     Name = "RIKZ HUB",
     HidePremium = false,
@@ -11,48 +12,69 @@ local Window = OrionLib:MakeWindow({
     Icon = "rbxassetid://4483333458",
     CloseCallback = function() end
 })
+
+-- TAB
 local Tab_Main = Window:MakeTab({
     Name = "Fitur Utama",
     Icon = "rbxassetid://4483333458"
 })
+
 local Tab_Brainrot = Window:MakeTab({
     Name = "Daftar Brainrot",
     Icon = "rbxassetid://603125843"
 })
+
+-- FITUR 1
 Tab_Main:AddToggle({
     Name = "🟣 Auto X2 Ungu",
     Default = false,
     Callback = function() end
 })
+
+-- FITUR 2: MODE KEBAL (VERSI PALING AMAN)
 Tab_Main:AddToggle({
     Name = "🛡️ Mode Kebal",
     Default = false,
     Callback = function(nyala)
-   if nyala then
-      _G.KebalAktif = true
-      OrionLib:MakeNotification({Name="AKTIF", Content="Mode Kebal: Gak Bisa Mati!", Time=2})
-    spawn(function()
-      while _G.KebalAktif and task.wait() do
-        local Player = game.Players.LocalPlayer
-        if Player.Character and Player.Character:FindFirstChild("Humanoid") then
-              Player.Character.Humanoid.Health = math.huge
-              Player.Character.Humanoid.MaxHealth = math.huge
-           end
-         end
-      end)
- else
-     _G.KebalAktif = false
-     OrionLib:MakeNotification({Name="MATI", Content="Mode Kebal Dimatikan!", Time=2})
-  end
+        _G.KebalAktif = nyala
+        if nyala then
+            OrionLib:MakeNotification({Name="INFO", Content="Mode Kebal AKTIF", Time=2})
+        else
+            OrionLib:MakeNotification({Name="INFO", Content="Mode Kebal MATI", Time=2})
+        end
+
+        spawn(function()
+            while task.wait(0.1) do
+                pcall(function()
+                    if _G.KebalAktif then
+                        local plr = game.Players.LocalPlayer
+                        local char = plr.Character or plr.CharacterAdded:Wait()
+                        local hum = char:FindFirstChildWhichIsA("Humanoid")
+                        if hum then
+                            hum.Health = 9e9
+                            hum.MaxHealth = 9e9
+                        end
+                    end
+                end)
+            end
+        end)
+    end
 })
+
+-- FITUR 3
 Tab_Main:AddToggle({
     Name = "📥 Auto Claim X2",
     Default = false,
     Callback = function() end
 })
+
+-- FITUR 4
 Tab_Main:AddToggle({
     Name = "💎 Ambil Brainrot Termahal",
     Default = false,
     Callback = function() end
 })
+
 OrionLib:Init()
+
+tetep ada space nya
