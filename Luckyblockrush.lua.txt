@@ -27,7 +27,23 @@ Tab_Main:AddToggle({
 Tab_Main:AddToggle({
     Name = "🛡️ Mode Kebal",
     Default = false,
-    Callback = function() end
+    Callback = function(nyala)
+   if nyala then
+      _G.KebalAktif = true
+      OrionLib:MakeNotification({Name="✅ AKTIF", Content="Mode Kebal: Gak Bisa Mati!", Time=2})
+    spawn(function()
+      while _G.KebalAktif and task.wait() do
+        local Player = game.Players.LocalPlayer
+        if Player.Character and Player.Character:FindFirstChild("Humanoid") then
+              Player.Character.Humanoid.Health = math.huge
+              Player.Character.Humanoid.MaxHealth = math.huge
+           end
+         end
+      end)
+ else
+     _G.KebalAktif = false
+     OrionLib:MakeNotification({Name="❌ MATI", Content="Mode Kebal Dimatikan!", Time=2})
+  end
 })
 Tab_Main:AddToggle({
     Name = "📥 Auto Claim X2",
